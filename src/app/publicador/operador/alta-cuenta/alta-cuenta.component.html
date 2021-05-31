@@ -1,0 +1,68 @@
+<h1 mat-dialog-title class="text-center">Registrar nueva cuenta</h1>
+<div mat-dialog-content>
+    <form [formGroup]="form">
+        <div class="horiz-center row">
+            <div class="col-12 horiz-center">
+                <mat-form-field appearance="outline">
+                    <mat-label>Portal</mat-label>
+                    <input matInput placeholder="" formControlName="portal" type="text" required>
+                    <!-- <button mat-button *ngIf="f.portal.value" matSuffix mat-icon-button aria-label="Clear"
+                        (click)="f.portal.setValue(null)">
+                        <mat-icon>close</mat-icon>
+                    </button> -->
+                </mat-form-field>
+                <!-- <p class="text-red" *ngIf="f.portal.errors?.required && (f.portal.dirty || f.portal.touched)">
+                    Ingrese portal
+                </p> -->
+            </div>
+            <div class="col-12 horiz-center">
+                <mat-form-field appearance="outline">
+                    <mat-label>Link</mat-label>
+                    <input matInput placeholder="" formControlName="link" type="text" required>
+                    <!-- <button mat-button *ngIf="f.link.value" matSuffix mat-icon-button aria-label="Clear"
+                        (click)="f.link.setValue(null)">
+                        <mat-icon>close</mat-icon>
+                    </button> -->
+                </mat-form-field>
+                <!-- <p class="text-red" *ngIf="f.link.errors?.required && (f.link.dirty || f.link.touched)">
+                    Ingrese link
+                </p> -->
+            </div>
+
+        </div>
+        <div class="horiz-center row">
+            <div class="col-12 horiz-center">
+                <mat-form-field appearance="outline">
+                    <mat-label>Usuario</mat-label>
+                    <input matInput placeholder="" formControlName="usuario" type="text" required>
+                    <!-- <button mat-button *ngIf="f.usuario.value" matSuffix mat-icon-button aria-label="Clear"
+                        (click)="f.usuario.setValue(null)">
+                        <mat-icon>close</mat-icon>
+                    </button> -->
+                </mat-form-field>
+                <!-- <p class="text-red" *ngIf="f.usuario.errors?.required && (f.usuario.dirty || f.usuario.touched)">
+                    Ingrese usuario
+                </p> -->
+            </div>
+            <div class="col-12 horiz-center">
+                <mat-form-field appearance="outline">
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput placeholder="" formControlName="contraseña" type="text" required>
+                    <!-- <button mat-button *ngIf="f['contraseña'].value" matSuffix mat-icon-button aria-label="Clear"
+                        (click)="f['contraseña'].setValue(null)">
+                        <mat-icon>close</mat-icon>
+                    </button> -->
+                </mat-form-field>
+                <!-- <p class="text-red"
+                    *ngIf="f['contraseña'].errors?.required && (f['contraseña'].dirty || f['contraseña'].touched)">
+                    Ingrese contraseña
+                </p> -->
+            </div>
+        </div>
+
+    </form>
+</div>
+<div mat-dialog-actions class="horiz-center">
+    <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
+    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" cdkFocusInitial>Aceptar</button>
+</div>

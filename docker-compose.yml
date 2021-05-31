@@ -1,0 +1,10 @@
+version: '3'
+services:
+  bigboard:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: bigboard
+    container_name: bigboard
+    ports:
+      - 7075:80

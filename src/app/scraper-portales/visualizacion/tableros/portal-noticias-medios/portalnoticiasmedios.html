@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style type="text/css">
+      *{
+        margin:0px;
+        padding:0px;
+      }
+body{
+  background: url(https://www.toptal.com/designers/subtlepatterns/patterns/sayagata-400px.png);
+  font-family: 'Signika', sans-serif;
+  font-size:21px;
+}
+header {
+  background: #2c5d96;
+  padding: 20px 20px;
+  box-shadow: 0px -8px 25px #6d6d6d;
+  position: absolute;
+
+  left: 0;
+  z-index: 991;
+  color: white;
+  width: 200px;
+}
+.menu{
+  display:inline-block;
+  cursor: pointer;
+}
+.main {
+  position: relative;
+
+}
+aside {
+  background: #255082;
+  padding: 0px 0px 10px 0px;
+  position: absolute;
+  left: 0;
+  box-shadow: 0px 3px 5px #6d6d6d;
+  overflow: hidden;
+  z-index: 99;
+  height: 1042px;
+}
+aside ul {
+  list-style: none;
+  width: 100%;
+}
+aside ul li {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 20px;
+  position: relative;
+}
+aside ul li a {
+  font-size: 14px;
+  color: white;
+  text-decoration: none;
+  text-transform:uppercase;
+  white-space: nowrap;
+  display: inline-block;
+}
+aside ul li a span {
+  display: inline-block;
+  vertical-align: middle;
+  color: white;
+  width: 38px;
+}
+article {
+  width: 82%;
+  height: 100vh;
+  margin-left: 18%;
+}
+aside ul li:hover {
+  background: #fff;
+  box-shadow: inset 0px 0px 77px #dedede;
+}
+aside ul li a span.notif {
+  position: absolute;
+  top: 8px;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  right: 10px;
+  background: #343436;
+  line-height: 31px;
+  border-radius: 100%;
+  color: #fff;
+}
+.red {
+  background: #e74c3c !important;         box-shadow: 0px 0px 10px #e74c3c;
+}
+.yellow {
+  background: #f1c40f !important;         box-shadow: 0px 0px 10px #f1c40f;
+}
+.green {
+  background: #27ae60 !important;
+  box-shadow: 0px 0px 10px #27ae60;
+}
+aside ul li a span.notif.green {
+    width: 10px;
+    height: 10px;
+    color: transparent;
+    right: 5px;
+    transition: all 0.2s ease;
+}
+aside ul li a span.notif.yellow  {
+    width: 10px;
+    height: 10px;
+    color: transparent;
+    right: 5px;
+    transition: all 0.2s ease;
+}
+aside ul li a span.notif.red  {
+    width: 10px;
+    height: 10px;
+    color: transparent;
+    right: 5px;
+    transition: all 0.2s ease;
+}
+aside ul li:hover a span.notif.red {
+    width: 30px;
+    height: 30px;
+    right: 15px;
+    color: #fff;
+    box-shadow: 0px 0px 60px #e74c3c;
+    top: 10px;
+}
+aside ul li:hover a span.notif.yellow{
+    width: 30px;
+    height: 30px;
+    right: 15px;
+    color: #fff;
+    box-shadow: 0px 0px 60px #f1c40f;
+    top: 10px;
+}
+aside ul li:hover a span.notif.green{
+    width: 30px;
+    height: 30px;
+    right: 15px;
+    color: #fff;
+    box-shadow: 0px 0px 60px #27ae60;
+    top: 10px;
+}
+aside.keep.width {
+    width: 280px;
+}
+aside.keep.width ul li a span.notif {
+    width: 30px;
+    height: 30px;
+    right: 10px;
+    color: #fff;
+    box-shadow: 0px 0px 10px transparent;
+    top: 8px;
+}
+/*  */
+@-webkit-keyframes blinker {
+  from {opacity: 1.0;}
+  to {opacity: 0.0;}
+}
+.blink{
+  text-decoration: blink;
+  -webkit-animation-name: blinker;
+  -webkit-animation-duration: 0.6s;
+  -webkit-animation-iteration-count:infinite;
+  -webkit-animation-timing-function:ease-in-out;
+  -webkit-animation-direction: alternate;
+}
+p.blink.mah {
+  text-align: center;
+  line-height: 25;
+  position:relative;
+}
+p.blink.mah span {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 102, 153, 0);
+  top: 248px;
+  left: 360px;
+}
+/*  */
+    </style>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  </head>
+  <body>
+
+    <section class="main">
+      <aside class="keep">
+        <ul>
+          <li>
+            <a [routerLink]="['/menu/scraper-portales/visualizacion/tablero']">
+              <span><i class="material-icons">apps</i></span>
+               General
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/menu/scraper-portales/visualizacion/tablero/portalnoticias']">
+              <span><i class="material-icons">stay_current_portrait</i></span>
+               NOTICIAS/FECHAS
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/menu/scraper-portales/visualizacion/tablero/portalnoticiasmedios']">
+              <span><i class="material-icons">announcement</i></span>
+               MEDIOS/PORTALES
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/menu/scraper-portales/visualizacion/tablero/portalnoticiasprovincias']">
+              <span><i class="material-icons">language</i>
+              </span>
+               NOTICIAS/PROVINCIAS
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/menu/scraper-portales/visualizacion/tablero/portalnoticiasreloj']">
+              <span><i class="material-icons">watch_later</i></span>
+               MEDIOS/RELOJ
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/menu/scraper-portales/visualizacion/tablero/portalnoticiasnuvenoticias']">
+              <span><i class="material-icons">thumb_up</i></span>
+               NOTICIAS/PORTALES
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/menu/scraper-portales/visualizacion/tablero/portalnoticiasnoticiasmedios']">
+              <span><i class="material-icons">tap_and_play</i></span>
+               NOTICIAS/MEDIOS
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+      <article>
+        <iframe style="width:99%;" src="http://167.86.120.98/app/kibana#/visualize/edit/e11971d0-4ad6-11eb-aa48-65e81f8b9969?embed=true&_g=(refreshInterval:(pause:!t,value:0),time:(from:now-5y,mode:quick,to:now))&_a=(filters:!(),linked:!f,query:(language:lucene,query:''),uiState:(vis:(defaultColors:('0+-+45':'rgb(247,252,245)','135+-+180':'rgb(35,139,69)','45+-+90':'rgb(199,233,192)','90+-+135':'rgb(116,196,118)'))),vis:(aggs:!((enabled:!t,id:'1',params:(),schema:metric,type:count),(enabled:!t,id:'2',params:(field:fecha,missingBucket:!f,missingBucketLabel:Missing,order:desc,orderBy:'1',otherBucket:!f,otherBucketLabel:Other,size:5000),schema:segment,type:terms),(enabled:!t,id:'3',params:(field:medio.keyword,missingBucket:!f,missingBucketLabel:Missing,order:desc,orderBy:'1',otherBucket:!f,otherBucketLabel:Other,size:12),schema:group,type:terms)),params:(addLegend:!t,addTooltip:!t,colorSchema:Greens,colorsNumber:4,colorsRange:!(),enableHover:!f,invertColors:!f,legendPosition:right,percentageMode:!f,setColorRange:!f,times:!(),type:heatmap,valueAxes:!((id:ValueAxis-1,labels:(color:%23555,overwriteColor:!f,rotate:0,show:!f),scale:(defaultYExtents:!f,type:linear),show:!f,type:value))),title:fecha_medioPORTALFINAL,type:heatmap))" height="1000" ></iframe>
+      </article>
+    </section>
+  </body>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+    $(".menu").click(function(){
+        $(".keep").toggleClass("width");
+    });
+  });
+  </script>
+
+</html>

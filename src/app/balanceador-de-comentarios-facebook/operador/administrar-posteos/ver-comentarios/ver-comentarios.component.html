@@ -1,0 +1,15 @@
+
+
+<div mat-dialog-content>
+    <table>
+        <tr *ngFor="let com of data?.data?.comentarios">
+            <th>{{com.usuario}}</th>
+            <td> 
+                {{com.comentario}}
+            </td>
+        </tr>
+    </table>
+</div>
+<div mat-dialog-actions class="horiz-center">
+    <button mat-raised-button color="primary" [mat-dialog-close]="data" cdkFocusInitial>Aceptar</button>
+</div>

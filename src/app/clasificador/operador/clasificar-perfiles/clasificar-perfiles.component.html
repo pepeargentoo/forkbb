@@ -1,0 +1,610 @@
+<p-toast position="bottom-center"></p-toast>
+
+<mat-tab-group mat-stretch-tabs [color]="color" [selectedIndex]="selected.value"
+    (selectedIndexChange)="selected.setValue($event)">
+    <mat-tab label="Listar reglas">
+        <ng-template mat-tab-label>
+            <mat-icon>list</mat-icon>
+            Listar reglas
+        </ng-template>
+        <mat-card class="m-2">
+            <h3 class="text-center">Listar reglas</h3>
+            <p class="text-right">
+                <button mat-icon-button color="primary" (click)="actualizar()" matTooltip="Recargar datos"
+                    [matTooltipPosition]='"left"'>
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </p>
+            <div class="horiz-center sticky">
+                <div *ngIf="dataSource.data.length == 0">
+                    Cargando datos ...
+                </div>
+                <table *ngIf="dataSource.data.length > 0" mat-table [dataSource]="dataSource"
+                    class="table-hover mat-elevation-z8 col-lg-6 col-md-10 col-sm-12">
+
+                    <ng-container matColumnDef="regla">
+                        <th mat-header-cell *matHeaderCellDef>Regla </th>
+                        <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="eliminar">
+                        <th mat-header-cell *matHeaderCellDef> Eliminar </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button color="warn" (click)="eliminar(element)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="output">
+                        <th mat-header-cell *matHeaderCellDef> Output </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button color="accent" (click)="getOneRegla(element)">
+                                <mat-icon>leaderboard</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Clasificador">
+        <ng-template mat-tab-label>
+            <mat-icon>psychology</mat-icon>
+            Clasificador
+        </ng-template>
+        
+        <mat-card class="m-2">
+            <h3 class="vertic-center horiz-center">
+                <p>
+                    Clasificador
+                    <!-- <a href="https://docs.google.com/document/d/e/2PACX-1vSe1w4iZ9vUR1wYwR9yFjX8QWjBcuuCJzFE96niXpqoDx2dbD7tUmZ8Nuy_XWa6fg/pub" target="_blank">
+                        <button mat-icon-button color="secondary" matTooltip="Ver Ayuda" [matTooltipPosition]='"left"'>
+                            <mat-icon>help</mat-icon>
+                        </button>
+                    </a> -->
+                    <!-- <iframe src="https://docs.google.com/document/d/e/2PACX-1vSe1w4iZ9vUR1wYwR9yFjX8QWjBcuuCJzFE96niXpqoDx2dbD7tUmZ8Nuy_XWa6fg/pub?embedded=true"></iframe> -->
+                </p>
+
+            </h3>
+            <form [formGroup]="formGroup">
+                <mat-horizontal-stepper formArrayName="form" [linear]="isLinear" #stepper>
+                    <mat-step>
+                        <ng-template matStepLabel>Origen de datos</ng-template>
+                        <section class="example-section">
+                            <span class="example-list-section">
+                                <mat-checkbox class="example-margin" [checked]="allComplete"
+                                    [indeterminate]="someComplete()" (change)="setAll($event.checked)">
+                                    {{task.name}}
+                                </mat-checkbox>
+                            </span>
+                            <span class="example-list-section">
+                                <ul>
+                                    <li *ngFor="let subtask of task.subtasks">
+                                        <mat-checkbox [(ngModel)]="subtask.completed" [color]="subtask.color"
+                                            (ngModelChange)="updateAllComplete()" [ngModelOptions]="{standalone: true}">
+                                            {{subtask.name}}
+                                        </mat-checkbox>
+                                    </li>
+                                </ul>
+                            </span>
+                        </section>
+                        <div class="horiz-center">
+                            <button mat-raised-button matStepperNext color="primary"
+                                (click)="enviarOrigenes()">Siguiente</button>
+                        </div>
+                    </mat-step>
+                    <mat-step *ngIf="NoticiasActive" [stepControl]="formNoticias">
+                        <ng-template matStepLabel>Noticias</ng-template>
+                        <form [formGroup]="formNoticias">
+                            <div class="horiz-center row">
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Educacion</mat-label>
+                                    <input matInput placeholder="" formControlName="educacion" type="number" min="1"
+                                        max="10">
+                                    <button mat-button *ngIf="fn.educacion.value" matSuffix mat-icon-button
+                                        aria-label="Clear" (click)="fn.educacion.setValue(null)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    <mat-error>
+                                        Ingrese educación
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Fecha</mat-label>
+                                    <input matInput [matDatepicker]="picker1" formControlName="fecha">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                    <mat-error>
+                                        Ingrese fecha
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Fecha 2</mat-label>
+                                    <input matInput [matDatepicker]="picker2" formControlName="fecha2">
+                                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker2></mat-datepicker>
+                                    <mat-error>
+                                        Ingrese fecha2
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Medio</mat-label>
+                                    <mat-select multiple formControlName="medio">
+                                        <mat-option *ngFor="let m of medios" value="{{m}}">{{m}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>
+                                        Seleccione un medio
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Salud</mat-label>
+                                    <input matInput placeholder="" formControlName="salud" type="number" min="1"
+                                        max="10">
+                                    <button mat-button *ngIf="fn.educacion.value" matSuffix mat-icon-button
+                                        aria-label="Clear" (click)="fn.salud.setValue(null)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    <mat-error>
+                                        Ingrese salud
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Sentimiento</mat-label>
+                                    <mat-select multiple formControlName="sentimiento">
+                                        <mat-option *ngFor="let s of sentimientos" value="{{s}}">{{s}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>
+                                        Seleccione un sentimiento
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Sentiminto</mat-label>
+                                    <input matInput placeholder="" formControlName="sentiminto" type="number" min="1"
+                                        max="10">
+                                    <button mat-button *ngIf="fn.educacion.value" matSuffix mat-icon-button
+                                        aria-label="Clear" (click)="fn.sentiminto.setValue(null)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    <mat-error>
+                                        Ingrese sentiminto
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Texto</mat-label>
+                                    <input matInput placeholder="" formControlName="texto" type="text">
+                                    <button mat-button *ngIf="fn.educacion.value" matSuffix mat-icon-button
+                                        aria-label="Clear" (click)="fn.texto.setValue(null)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    <mat-error>
+                                        Ingrese texto
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Trabajo</mat-label>
+                                    <input matInput placeholder="" formControlName="trabajo" type="number" min="1"
+                                        max="10">
+                                    <button mat-button *ngIf="fn.trabajo.value" matSuffix mat-icon-button
+                                        aria-label="Clear" (click)="fn.trabajo.setValue(null)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    <mat-error>
+                                        Ingrese trabajo
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="horiz-center">
+                                <button mat-button matStepperPrevious>Volver</button>
+                                <button mat-raised-button matStepperNext color="primary"
+                                    (click)="submitNoticias()">Siguiente</button>
+                            </div>
+
+                        </form>
+                    </mat-step>
+                    <mat-step *ngIf="IVRActive">
+                        <ng-template matStepLabel>IVR</ng-template>
+                        <form [formGroup]="formIvr">
+                            <div class="horiz-center row">
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Campaña</mat-label>
+                                    <mat-select formControlName="campana">
+                                        <mat-option *ngFor="let c of campanas" value="{{c}}">{{c}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>
+                                        Seleccione una campaña
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12"
+                                    matTooltip="Primero indique la campaña" [matTooltipDisabled]="fi.campana.value"
+                                    [matTooltipPosition]="'above'">
+                                    <mat-label>Pregunta</mat-label>
+                                    <mat-select multiple formControlName="pregunta" [disabled]="!fi.campana.value">
+                                        <mat-option *ngFor="let p of preguntas" value="{{p}}">{{p}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>
+                                        Seleccione una pregunta
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12"
+                                    matTooltip="Primero indique la campaña" [matTooltipDisabled]="fi.campana?.value"
+                                    [matTooltipPosition]="'above'">
+                                    <mat-label>Respuesta</mat-label>
+                                    <mat-select multiple formControlName="respuesta" [disabled]="!fi.campana.value">
+                                        <mat-option *ngFor="let r of respuestas" value="{{r}}">{{r}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>
+                                        Seleccione una respuesta
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Estado</mat-label>
+                                    <mat-select multiple formControlName="status">
+                                        <mat-option *ngFor="let s of status" value="{{s}}">{{s}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>
+                                        Seleccione status
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Teléfono</mat-label>
+                                    <input matInput placeholder="" formControlName="telefono" type="text">
+                                    <button mat-button *ngIf="fi.telefono.value" matSuffix mat-icon-button
+                                        aria-label="Clear" (click)="fi.telefono.setValue(null)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    <mat-error>
+                                        Ingrese teléfono
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="horiz-center">
+                                <button mat-button matStepperPrevious>Volver</button>
+                                <button mat-raised-button matStepperNext color="primary"
+                                    (click)="submitIvr()">Siguiente</button>
+                            </div>
+                        </form>
+                    </mat-step>
+                    <mat-step *ngIf="balanceadorActive">
+                        <ng-template matStepLabel>Balanceador</ng-template>
+                        <form [formGroup]="formBalanceador">
+                            <div class="horiz-center row">
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Cantidad de comentarios</mat-label>
+                                    <input matInput placeholder="" formControlName="cant_comentarios" type="number"
+                                        min="1" max="10">
+                                    <button mat-button *ngIf="fba.cant_comentarios.value" matSuffix mat-icon-button
+                                        aria-label="Clear" (click)="fba.cant_comentarios.setValue(null)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    <mat-error>
+                                        Ingrese Cantidad de comentarios
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Cantidad de likes</mat-label>
+                                    <input matInput placeholder="" formControlName="cant_mg" type="number" min="1"
+                                        max="10">
+                                    <button mat-button *ngIf="fba.cant_mg.value" matSuffix mat-icon-button
+                                        aria-label="Clear" (click)="fba.cant_mg.setValue(null)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    <mat-error>
+                                        Ingrese Cantidad de likes
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Fecha</mat-label>
+                                    <input matInput [matDatepicker]="picker3" formControlName="datetime">
+                                    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker3></mat-datepicker>
+                                    <mat-error>
+                                        Ingrese fecha
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Descripción post</mat-label>
+                                    <input matInput placeholder="" formControlName="descripcion_post" type="text">
+                                    <button mat-button *ngIf="fba.descripcion_post.value" matSuffix mat-icon-button
+                                        aria-label="Clear" (click)="fba.descripcion_post.setValue(null)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    <mat-error>
+                                        Ingrese descripción post
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Página Noticia</mat-label>
+                                    <input matInput placeholder="" formControlName="pag_noticia" type="text">
+                                    <button mat-button *ngIf="fba.pag_noticia.value" matSuffix mat-icon-button
+                                        aria-label="Clear" (click)="fba.pag_noticia.setValue(null)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    <mat-error>
+                                        Ingrese página noticia
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>URL</mat-label>
+                                    <input matInput placeholder="" formControlName="url" type="text">
+                                    <button mat-button *ngIf="fba.url.value" matSuffix mat-icon-button
+                                        aria-label="Clear" (click)="fba.url.setValue(null)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    <mat-error>
+                                        Ingrese URL
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="horiz-center">
+                                <button mat-button matStepperPrevious>Volver</button>
+                                <button mat-raised-button matStepperNext color="primary"
+                                    (click)="submitBalanceador()">Siguiente</button>
+                            </div>
+                        </form>
+
+                    </mat-step>
+                    <mat-step>
+                        <ng-template matStepLabel>Crear Regla</ng-template>
+                        <form [formGroup]="formRule">
+                            <div class="horiz-center row">
+                                <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-label>Nombre de la regla</mat-label>
+                                    <input matInput placeholder="" formControlName="nombre" type="text" required>
+                                    <button mat-button *ngIf="fr.nombre.value" matSuffix mat-icon-button
+                                        aria-label="Clear" (click)="fr.nombre.setValue(null)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    <mat-error>
+                                        Ingrese nombre de la regla
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                        </form>
+                        <div class="text-center">
+                            <button color="primary" type="button" (click)="postPrerule()" mat-raised-button>Crear
+                                regla</button>
+                        </div>
+                    </mat-step>
+                </mat-horizontal-stepper>
+            </form>
+        </mat-card>
+
+    </mat-tab>
+    <mat-tab label="Resultados" *ngIf="idRegla">
+
+        <ng-template mat-tab-label>
+            <mat-icon>leaderboard</mat-icon>
+            Resultados
+        </ng-template>
+
+        <mat-card class="m-2">
+            <h3 class="text-center">Resultados de {{reglaSelected?.nombre}}</h3>
+
+            <mat-accordion class="example-headers-align" multi>
+
+                <div
+                    *ngIf="dataSourceNoticias?.data?.length < 1 && dataSourceBalanceador?.data?.length < 1 && dataSourceIvr?.data?.length < 1">
+                    <p class="text-center">No se encontraron coincidencias</p>
+                </div>
+
+                <mat-expansion-panel *ngIf="dataSourceNoticias?.data?.length > 0">
+                    <mat-expansion-panel-header>
+                        Noticias
+                    </mat-expansion-panel-header>
+                    <div>
+                        <button mat-icon-button matTooltip="Descargar excel" type="button"
+                            (click)="exportNoticiasAsXLSX()" class="float-right" [matTooltipPosition]='"left"'>
+                            <mat-icon>get_app</mat-icon>
+                        </button>
+                        <mat-form-field>
+                            <mat-label>Filtrar</mat-label>
+                            <input matInput (keyup)="applyFilterNoticias($event)" placeholder="" #input>
+                        </mat-form-field>
+                        <table mat-table [dataSource]="dataSourceNoticias" class="table-hover mat-elevation-z8 col-12">
+
+                            <ng-container matColumnDef="titulo">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold"
+                                    style="width: 80px;">Titulo </th>
+                                <td mat-cell *matCellDef="let element" class="text-center" style="width: 80px;">
+                                    {{element.titulo}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="texto">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold"
+                                    style="padding: 0px 10px;"> Texto </th>
+                                <td mat-cell *matCellDef="let element" class="text-center" style="padding: 0px 10px;">
+                                    {{element.texto}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="medio">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold"
+                                    style="width: 80px;"> Medio </th>
+                                <td mat-cell *matCellDef="let element" class="text-center" style="width: 80px;">
+                                    {{element.medio}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="fecha">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold"
+                                    style="width: 80px;"> Fecha </th>
+                                <td mat-cell *matCellDef="let element" class="text-center" sstyle="width: 80px;">
+                                    {{element.fecha}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="fecha2">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold"
+                                    style="width: 80px;"> Fecha 2</th>
+                                <td mat-cell *matCellDef="let element" class="text-center" style="width: 80px;">
+                                    {{element.fecha2}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="sentimiento">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold"
+                                    style="width: 80px;"> Sentimiento </th>
+                                <td mat-cell *matCellDef="let element" class="text-center" style="width: 80px;">
+                                    {{element.sentimiento}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="salud">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold"
+                                    style="width: 80px;"> Salud </th>
+                                <td mat-cell *matCellDef="let element" class="text-center" style="width: 80px;">
+                                    {{element.salud}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="trabajo">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold"
+                                    style="width: 80px;"> Trabajo </th>
+                                <td mat-cell *matCellDef="let element" class="text-center" style="width: 80px;">
+                                    {{element.trabajo}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="educacion">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold"
+                                    style="width: 80px;"> Educacion </th>
+                                <td mat-cell *matCellDef="let element" class="text-center" style="width: 80px;">
+                                    {{element.educacion}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="sentiminto">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold"
+                                    style="width: 80px;"> Sentiminto </th>
+                                <td mat-cell *matCellDef="let element" class="text-center" style="width: 80px;">
+                                    {{element.sentiminto}} </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsNoticias"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsNoticias;"></tr>
+                        </table>
+                    </div>
+
+                </mat-expansion-panel>
+
+                <mat-expansion-panel *ngIf="dataSourceBalanceador?.data?.length > 0">
+                    <mat-expansion-panel-header>
+                        Balanceador
+                    </mat-expansion-panel-header>
+
+
+                    <div>
+                        <button mat-icon-button matTooltip="Descargar excel" type="button"
+                            (click)="exportBalanceadorAsXLSX()" class="float-right" [matTooltipPosition]='"left"'>
+                            <mat-icon>get_app</mat-icon>
+                        </button>
+                        <mat-form-field>
+                            <mat-label>Filtrar</mat-label>
+                            <input matInput (keyup)="applyFilterBalanceador($event)" placeholder="" #input>
+                        </mat-form-field>
+                        <table mat-table [dataSource]="dataSourceBalanceador"
+                            class="table-hover mat-elevation-z8 col-12">
+
+                            <ng-container matColumnDef="url">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold"
+                                    style="width: 100px;">Url </th>
+                                <td mat-cell *matCellDef="let element" class="text-center" style="width: 100px;">
+                                    {{element.url}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="datetime">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold"
+                                    style="width: 100px;"> Datetime </th>
+                                <td mat-cell *matCellDef="let element" class="text-center" style="width: 100px;">
+                                    {{element.datetime}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="cant_mg">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold"
+                                    style="width: 100px;"> Cant_mg </th>
+                                <td mat-cell *matCellDef="let element" class="text-center" style="width: 100px;">
+                                    {{element.cant_mg}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="cant_comentarios">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold"
+                                    style="width: 100px;"> Cant_comentarios </th>
+                                <td mat-cell *matCellDef="let element" class="text-center" style="width: 100px;">
+                                    {{element.cant_comentarios}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="cant_compartidos">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold"
+                                    style="width: 100px;"> Cant_compartidos </th>
+                                <td mat-cell *matCellDef="let element" class="text-center" style="width: 100px;">
+                                    {{element.cant_compartidos}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="pag_noticia">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold"
+                                    style="width: 100px;"> Pag_noticia </th>
+                                <td mat-cell *matCellDef="let element" class="text-center" style="width: 100px;">
+                                    {{element.pag_noticia}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="descripcion_post">
+                                <th mat-header-cell *matHeaderCellDef class="text-center font-weight-bold">
+                                    Descripcion_post </th>
+                                <td mat-cell *matCellDef="let element" class="text-center" style="min-width: 100px;">
+                                    {{element.descripcion_post}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsBalanceador"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsBalanceador;"></tr>
+                        </table>
+                    </div>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel *ngIf="dataSourceIvr?.data?.length > 0">
+                    <mat-expansion-panel-header>
+                        Ivr
+                    </mat-expansion-panel-header>
+
+
+                    <div>
+                        <button mat-icon-button matTooltip="Descargar excel" type="button" (click)="exportIVRAsXLSX()"
+                            class="float-right" [matTooltipPosition]='"left"'>
+                            <mat-icon>get_app</mat-icon>
+                        </button>
+                        <mat-form-field>
+                            <mat-label>Filtrar</mat-label>
+                            <input matInput (keyup)="applyFilterIvr($event)" placeholder="" #input>
+                        </mat-form-field>
+                        <table mat-table [dataSource]="dataSourceIvr" class="table-hover mat-elevation-z8 col-12">
+
+                            <ng-container matColumnDef="campana">
+                                <th mat-header-cell *matHeaderCellDef>Campaña</th>
+                                <td mat-cell *matCellDef="let element"> {{element.campana}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef> Estado </th>
+                                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="pregunta">
+                                <th mat-header-cell *matHeaderCellDef> pregunta </th>
+                                <td mat-cell *matCellDef="let element"> {{element.pregunta}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="respuesta">
+                                <th mat-header-cell *matHeaderCellDef> respuesta </th>
+                                <td mat-cell *matCellDef="let element"> {{element.respuesta}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="telefono">
+                                <th mat-header-cell *matHeaderCellDef> telefono </th>
+                                <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsIvr"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsIvr;"></tr>
+                        </table>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </mat-card>
+
+    </mat-tab>
+</mat-tab-group>

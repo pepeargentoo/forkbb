@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <style type="text/css">
+    * {
+      margin: 0px;
+      padding: 0px;
+    }
+
+    body {
+      background: url(https://www.toptal.com/designers/subtlepatterns/patterns/sayagata-400px.png);
+      font-family: 'Signika', sans-serif;
+      font-size: 21px;
+    }
+
+    header {
+      background: #2c5d96;
+      padding: 20px 20px;
+      box-shadow: 0px -8px 25px #6d6d6d;
+      position: absolute;
+
+      left: 0;
+      z-index: 991;
+      color: white;
+      width: 200px;
+    }
+
+    .menu {
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .main {
+      position: relative;
+
+    }
+
+    aside {
+      background: #255082;
+      padding: 0px 0px 10px 0px;
+      position: absolute;
+      left: 0;
+      box-shadow: 0px 3px 5px #6d6d6d;
+      overflow: hidden;
+      z-index: 99;
+      height: 1042px;
+    }
+
+    aside ul {
+      list-style: none;
+      width: 100%;
+    }
+
+    aside ul li {
+      border-bottom: 1px solid #ccc;
+      padding: 10px 20px;
+      position: relative;
+    }
+
+    aside ul li a {
+      font-size: 14px;
+      color: white;
+      text-decoration: none;
+      text-transform: uppercase;
+      white-space: nowrap;
+      display: inline-block;
+    }
+
+    aside ul li a span {
+      display: inline-block;
+      vertical-align: middle;
+      color: white;
+      width: 38px;
+    }
+
+    article {
+      width: 78%;
+      height: 100vh;
+      margin-left: 22%;
+    }
+
+    aside ul li:hover {
+      background: #fff;
+      box-shadow: inset 0px 0px 77px #dedede;
+    }
+
+    aside ul li a span.notif {
+      position: absolute;
+      top: 8px;
+      text-align: center;
+      width: 30px;
+      height: 30px;
+      right: 10px;
+      background: #343436;
+      line-height: 31px;
+      border-radius: 100%;
+      color: #fff;
+    }
+
+    .red {
+      background: #e74c3c !important;
+      box-shadow: 0px 0px 10px #e74c3c;
+    }
+
+    .yellow {
+      background: #f1c40f !important;
+      box-shadow: 0px 0px 10px #f1c40f;
+    }
+
+    .green {
+      background: #27ae60 !important;
+      box-shadow: 0px 0px 10px #27ae60;
+    }
+
+    aside ul li a span.notif.green {
+      width: 10px;
+      height: 10px;
+      color: transparent;
+      right: 5px;
+      transition: all 0.2s ease;
+    }
+
+    aside ul li a span.notif.yellow {
+      width: 10px;
+      height: 10px;
+      color: transparent;
+      right: 5px;
+      transition: all 0.2s ease;
+    }
+
+    aside ul li a span.notif.red {
+      width: 10px;
+      height: 10px;
+      color: transparent;
+      right: 5px;
+      transition: all 0.2s ease;
+    }
+
+    aside ul li:hover a span.notif.red {
+      width: 30px;
+      height: 30px;
+      right: 15px;
+      color: #fff;
+      box-shadow: 0px 0px 60px #e74c3c;
+      top: 10px;
+    }
+
+    aside ul li:hover a span.notif.yellow {
+      width: 30px;
+      height: 30px;
+      right: 15px;
+      color: #fff;
+      box-shadow: 0px 0px 60px #f1c40f;
+      top: 10px;
+    }
+
+    aside ul li:hover a span.notif.green {
+      width: 30px;
+      height: 30px;
+      right: 15px;
+      color: #fff;
+      box-shadow: 0px 0px 60px #27ae60;
+      top: 10px;
+    }
+
+    aside.keep.width {
+      width: 280px;
+    }
+
+    aside.keep.width ul li a span.notif {
+      width: 30px;
+      height: 30px;
+      right: 10px;
+      color: #fff;
+      box-shadow: 0px 0px 10px transparent;
+      top: 8px;
+    }
+
+    /*  */
+    @-webkit-keyframes blinker {
+      from {
+        opacity: 1.0;
+      }
+
+      to {
+        opacity: 0.0;
+      }
+    }
+
+    .blink {
+      text-decoration: blink;
+      -webkit-animation-name: blinker;
+      -webkit-animation-duration: 0.6s;
+      -webkit-animation-iteration-count: infinite;
+      -webkit-animation-timing-function: ease-in-out;
+      -webkit-animation-direction: alternate;
+    }
+
+    p.blink.mah {
+      text-align: center;
+      line-height: 25;
+      position: relative;
+    }
+
+    p.blink.mah span {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 102, 153, 0);
+      top: 248px;
+      left: 360px;
+    }
+
+    /*  */
+  </style>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+  <section class="main">
+    <aside class="keep">
+      <ul>
+        <li>
+          <a [routerLink]="['./']">
+            <span><i class="material-icons">apps</i></span>
+            General
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/menu/balanceador-comentarios/visualizacion/tablero/balanceadormedios']">
+            <span><i class="material-icons">stay_current_portrait</i></span>
+            MEDIOS DE COMUNICACIONES
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/menu/balanceador-comentarios/visualizacion/tablero/balanceadorcomentarios']">
+            <span><i class="material-icons">announcement</i></span>
+            COMENTARIOS
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/menu/balanceador-comentarios/visualizacion/tablero/balanceadorcomentariosxusuario']">
+            <span><i class="material-icons">assignment_ind</i>
+            </span>
+            COMENTARIO/USUARIOS
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/menu/balanceador-comentarios/visualizacion/tablero/balanceadornoticias']">
+            <span><i class="material-icons">textsms</i></span>
+            NOTICIAS
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/menu/balanceador-comentarios/visualizacion/tablero/balanceadorcomentariosxusuario']">
+            <span><i class="material-icons">thumb_up</i></span>
+            MG/USUARIO
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/menu/balanceador-comentarios/visualizacion/tablero/balanceadorusuariomedios']">
+            <span><i class="material-icons">tap_and_play</i></span>
+            MEDIOS/USUARIOS
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <article>
+
+      <iframe style="width:99%;"
+        src="http://167.86.120.98/app/kibana#/dashboard/e621d5d0-4ae7-11eb-aa48-65e81f8b9969?embed=true&_g=(refreshInterval:(pause:!t,value:0),time:(from:now-5y,mode:quick,to:now))&_a=(description:'',filters:!(),fullScreenMode:!f,options:(darkTheme:!f,hidePanelTitles:!f,useMargins:!t),panels:!((embeddableConfig:(),gridData:(h:13,i:'1',w:48,x:0,y:0),id:'9b68f040-4ad4-11eb-aa48-65e81f8b9969',panelIndex:'1',title:'CANTIDAD+DE+MG+POR+USUARIO',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'2',w:25,x:0,y:13),id:de31d7b0-4ad5-11eb-aa48-65e81f8b9969,panelIndex:'2',title:NOTICIAS,type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'4',w:23,x:25,y:13),id:'4822c5e0-4ad5-11eb-aa48-65e81f8b9969',panelIndex:'4',type:visualization,version:'6.8.10')),query:(language:lucene,query:''),timeRestore:!f,title:'BALANCEADOR',viewMode:view)"
+        height="1020"></iframe>
+      <router-outlet></router-outlet>
+
+    </article>
+  </section>
+</body>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $(".menu").click(function () {
+      $(".keep").toggleClass("width");
+    });
+  });
+</script>
+
+</html>

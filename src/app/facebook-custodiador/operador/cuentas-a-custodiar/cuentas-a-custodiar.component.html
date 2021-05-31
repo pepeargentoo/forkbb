@@ -1,0 +1,121 @@
+<p-toast position="bottom-center"></p-toast>
+
+<mat-tab-group mat-stretch-tabs [color]="color" [selectedIndex]="selected.value"
+    (selectedIndexChange)="selected.setValue($event)">
+    <mat-tab label="Listado de cuentas de facebook a custodiar">
+        <ng-template mat-tab-label>
+            <mat-icon>list</mat-icon>
+            Listado de cuentas de facebook a custodiar
+        </ng-template>
+        <mat-card class="m-2">
+            <h3 class="text-center">Listado de cuentas de facebook a custodiar</h3>
+            <p class="text-right">
+                <button mat-icon-button color="primary" (click)="actualizar()" matTooltip="Recargar datos"
+                    [matTooltipPosition]='"left"'>
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </p>
+            <div class="horiz-center sticky">
+                <div *ngIf="dataSource.data.length == 0">
+                    Cargando datos ...
+                </div>
+
+                <table *ngIf="dataSource.data.length > 0" mat-table [dataSource]="dataSource"
+                    class="mat-elevation-z8 mt-3 col-xs-12 col-lg-10 col-md-12 table-hover">
+
+                    <ng-container matColumnDef="nombre_pagina">
+                        <th mat-header-cell *matHeaderCellDef> Página </th>
+                        <td mat-cell *matCellDef="let element"> {{element?.nombre_pagina}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="url">
+                        <th mat-header-cell *matHeaderCellDef> URL </th>
+                        <td mat-cell *matCellDef="let element"> {{element?.url}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="likes">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Likes </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="vertic-center horiz-center">
+                                <mat-icon color="primary">thumb_up_alt</mat-icon>
+                                {{ element?.cant_mg }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="comentarios">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Comentarios </th>
+                        <td mat-cell *matCellDef="let element" class="text-center">
+                            <!-- <span class="vertic-center horiz-center">
+                                <mat-icon color="primary">comment</mat-icon>
+                                {{element?.cant_comentarios}}
+                            </span> -->
+                            <button mat-mini-fab color="accent" (click)="mostrarComentarios(element)">
+                                <mat-icon>comment</mat-icon>
+                                {{element?.cant_comentarios}}
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="eliminar">
+                        <th mat-header-cell *matHeaderCellDef> Eliminar </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button color="warn" (click)="eliminar(element)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="editar">
+                        <th mat-header-cell *matHeaderCellDef> Editar </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button color="accent" (click)="editar(element)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true">
+                    </tr>
+                    <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row">
+                    </tr>
+                </table>
+            </div>
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Administrar cuentas de facebook a custodiar">
+
+        <mat-card class="m-2">
+            <h3 class="text-center">Administrar cuentas de facebook a custodiar</h3>
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="horiz-center row">
+                    <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput placeholder="link" formControlName="nombre_pagina" required>
+                        <button mat-button *ngIf="f.nombre_pagina.value" matSuffix mat-icon-button aria-label="Clear"
+                            (click)="f.nombre_pagina.setValue(null)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <mat-error>
+                            Ingrese nombre
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>URL</mat-label>
+                        <input matInput placeholder="link" formControlName="url_perfil"  [attr.disabled]="editando" required>
+                        <button mat-button *ngIf="f.url_perfil.value" matSuffix mat-icon-button aria-label="Clear"
+                            (click)="f.url_perfil.setValue(null)" [disabled]="editando">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <mat-error>
+                            Ingrese url
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="text-center">
+                    <button mat-raised-button color="accent" type="button" class="m-3"
+                    (click)="cancelar()">Cancelar</button>
+                    <button mat-raised-button color="primary" type="submit">Aceptar</button>
+                </div>
+            </form>
+        </mat-card>
+    </mat-tab>
+</mat-tab-group>

@@ -1,0 +1,157 @@
+<p-toast position="bottom-center"></p-toast>
+
+<mat-tab-group mat-stretch-tabs [color]="color" [selectedIndex]="selected.value"
+    (selectedIndexChange)="selected.setValue($event)">
+    <mat-tab label="Listar los datos de las sondas">
+        <ng-template mat-tab-label>
+            <mat-icon>list</mat-icon>
+            Listar los datos de las sondas
+        </ng-template>
+        <mat-card class="m-2">
+            <h3 class="text-center">Listar los datos de las sondas</h3>
+            <p class="text-right">
+                <button mat-icon-button color="primary" (click)="actualizar()" matTooltip="Recargar datos"
+                    [matTooltipPosition]='"left"'>
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </p>
+            <div class="horiz-center sticky">
+                <div *ngIf="dataSource.data.length == 0">
+                    Cargando datos ...
+                </div>
+
+                <table *ngIf="dataSource.data.length > 0" mat-table [dataSource]="dataSource"
+                    class="table-hover mat-elevation-z8 col-lg-10 col-md-10 col-sm-12 m-1">
+
+                    <ng-container matColumnDef="id_grupo">
+                        <th mat-header-cell *matHeaderCellDef> ID Grupo </th>
+                        <td mat-cell *matCellDef="let element"> {{element?.id_grupo}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="nombre_grupo">
+                        <th mat-header-cell *matHeaderCellDef> Grupo </th>
+                        <td mat-cell *matCellDef="let element"> {{element?.nombre_grupo}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="provincias">
+                        <th mat-header-cell *matHeaderCellDef> Provincias </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span *ngFor="let item of element?.provincias; let i=index">
+                                {{item?.nombre_provincia}} <span *ngIf="i !== element?.provincias.length - 1"> - </span>
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="temas">
+                        <th mat-header-cell *matHeaderCellDef> Temas </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span *ngFor="let item of element?.temas; let i=index">
+                                {{item?.descripcion}} <span *ngIf="i !== element?.temas.length - 1"> - </span>
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="editar">
+                        <th mat-header-cell *matHeaderCellDef> Editar </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button color="accent" (click)="editar(element)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <!-- <ng-container matColumnDef="eliminar">
+                        <th mat-header-cell *matHeaderCellDef> Eliminar </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button color="warn">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container> -->
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Asignar tema de búsqueda a un grupo">
+        <mat-card class="m-2">
+            <h3 class="text-center">Asignar tema de búsqueda a un grupo</h3>
+
+            <form [formGroup]="form" (ngSubmit)="asignar()">
+                <div class="horiz-center row">
+                    <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>ID Grupo Telegram</mat-label>
+                        <input matInput placeholder="123" formControlName="id_grupo" required [attr.disabled]="editando">
+                        <button *ngIf="f.id_grupo.value" mat-button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="f.id_grupo.setValue(null)" [disabled]="editando">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <mat-error>
+                            Ingrese ID del grupo de Telegram
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="horiz-center row">
+                    <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>Nombre del grupo Telegram</mat-label>
+                        <input matInput placeholder="" formControlName="nombre_grupo" required [attr.disabled]="editando">
+                        <button *ngIf="f.nombre_grupo.value" mat-button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="f.nombre_grupo.setValue(null)" [disabled]="editando">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <mat-error>
+                            Ingrese nombre del grupo de Telegram
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="horiz-center row" *ngIf="editando">
+                    <!-- <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>Temas a buscar</mat-label>
+                        <input matInput placeholder="tema1, tema2" formControlName="temas" required>
+                        <button *ngIf="f.temas.value" mat-button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="f.temas.setValue(null)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <mat-error>
+                            Ingrese temas, separados por coma
+                        </mat-error>
+                    </mat-form-field> -->
+
+                    <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>Temas a buscar</mat-label>
+                        <mat-chip-list #chipList >
+                            <mat-chip *ngFor="let item of f.temas.value" [selectable]="selectable"
+                                [removable]="removable" (removed)="remove(item)" #chip="matChip"  (click)='chip.select()'  value="{{item.id_tema}}">
+                                {{item.descripcion}} 
+                                <mat-icon class="pl-1" style="cursor: pointer; opacity: 0.4;" (click)="edit(item)" >edit</mat-icon>
+
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                            </mat-chip>
+                            <input placeholder="Escriba un tema y luego presione Enter..." [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                                (matChipInputTokenEnd)="add($event)">
+                        </mat-chip-list>
+                    </mat-form-field>
+                </div>
+                <div class="horiz-center row" *ngIf="editando">
+                    <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>Seleccione Provincias</mat-label>
+                        <mat-select formControlName="provincias" multiple required>
+                            <mat-option *ngFor="let item of listaProvincias" value="{{item.id_provincia}}"  (onSelectionChange)="optionSelected($event)">
+                                {{item.nombre_provincia}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Seleccione provincia/s
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="text-center">
+                    <button mat-raised-button color="accent" type="button" class="m-3"
+                        (click)="cancelar()">Cancelar</button>
+                    <button mat-raised-button color="primary" type="submit" class="m-3">Aceptar</button>
+                </div>
+
+            </form>
+        </mat-card>
+    </mat-tab>
+</mat-tab-group>

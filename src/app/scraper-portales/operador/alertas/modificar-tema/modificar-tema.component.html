@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<div mat-dialog-content>
+    <!-- <p>{{ data.msj }}</p> -->
+
+    <div class="horiz-center row">
+        <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+            <mat-label>Tema</mat-label>
+            <input matInput placeholder="" [(ngModel)]="data.msj" required>
+            <button *ngIf="data.msj.value" mat-button matSuffix mat-icon-button aria-label="Clear"
+                (click)="data.msj.value = null">
+                <mat-icon>close</mat-icon>
+            </button>
+            <mat-error>
+                Ingrese tema
+            </mat-error>
+        </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="data" cdkFocusInitial>Aceptar</button>
+</div>

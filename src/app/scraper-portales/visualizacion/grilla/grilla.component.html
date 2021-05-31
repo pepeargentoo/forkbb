@@ -1,0 +1,217 @@
+<mat-card class="m-2">
+    <h3 class="text-center">Output Scraper de portales</h3>
+
+    <div>
+        <button mat-icon-button matTooltip="Descargar excel solo datos filtrados" type="button"
+            (click)="exportAsXLSXSDataSelected()" [matTooltipPosition]='"left"' [disabled]="loading"
+            class="float-right">
+            <mat-icon>get_app</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Descargar excel" type="button" (click)="exportAsXLSX()"
+            [matTooltipPosition]='"left"' [disabled]="loading" class="float-right">
+            <mat-icon>get_app</mat-icon>
+        </button>
+    </div>
+    <div style="clear: both;">
+        <p-table #dt [columns]="selectedColumns" [value]="data" dataKey="id" styleClass="p-datatable-customers"
+            [rowHover]="true" [rows]="15" [showCurrentPageReport]="true" [rowsPerPageOptions]="[15,25,50]"
+            [loading]="loading" [paginator]="true"
+            currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} resultados" [filterDelay]="0"
+            [globalFilterFields]="['educacion','fecha','fecha2' ,'grupo','imagen','link', 'medio','noticiascol', 'salud','sentimiento','sentiminto', 'texto', 'trabajo', 'titulo' ]">
+            <ng-template pTemplate="caption">
+                <div class="table-header">
+                    <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+                        selectedItemsLabel="{0} columnas seleccionadas" [style]="{minWidth: '200px'}"
+                        placeholder="Selecciona columnas"></p-multiSelect>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                        placeholder="Buscar" />
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <!-- <th pSortableColumn="educacion">educacion <p-sortIcon field="educacion"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="fecha">fecha <p-sortIcon field="fecha"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="fecha2">fecha2 <p-sortIcon field="fecha2"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="grupo">grupo <p-sortIcon field="grupo"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="imagen">imagen <p-sortIcon field="imagen"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="link">link <p-sortIcon field="link"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="medio">medio <p-sortIcon field="medio"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="noticiascol">noticiascol <p-sortIcon field="noticiascol"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="salud">salud <p-sortIcon field="salud"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="sentimiento">sentimiento <p-sortIcon field="sentimiento"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="sentiminto">sentiminto <p-sortIcon field="sentiminto"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="texto">texto <p-sortIcon field="texto"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="trabajo">trabajo <p-sortIcon field="trabajo"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="titulo">titulo <p-sortIcon field="titulo"></p-sortIcon>
+                    </th> -->
+                    <th *ngFor="let col of columns" pSortableColumn="{{col.field}}" class="text-center">
+                        {{col.header}}
+                        <p-sortIcon field="{{col.field}}">
+                        </p-sortIcon>
+                    </th>
+                </tr>
+                <!-- <tr>
+                    <th>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value, 'educacion', 'contains')"
+                            placeholder="" class="p-column-filter">
+                    </th>
+                    <th>
+                        <p-calendar (onSelect)="onDateSelect($event)" (onClearClick)="dt.filter('', 'fecha', 'equals')"
+                            [showButtonBar]="true" styleClass="p-column-filter" placeholder="" [readonlyInput]="true"
+                            dateFormat="yy-mm-dd"></p-calendar>
+                    </th>
+                    <th>
+                        <p-calendar (onSelect)="onDateSelect($event)" (onClearClick)="dt.filter('', 'fecha2', 'equals')"
+                            [showButtonBar]="true" styleClass="p-column-filter" placeholder="" [readonlyInput]="true"
+                            dateFormat="yy-mm-dd"></p-calendar>
+                    </th>
+                    <th>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value, 'grupo', 'contains')"
+                            placeholder="" class="p-column-filter">
+                    </th>
+                    <th>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value, 'imagen', 'contains')"
+                            placeholder="" class="p-column-filter">
+                    </th>
+                    <th>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value, 'link', 'contains')"
+                            placeholder="" class="p-column-filter">
+                    </th>
+                    <th>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value, 'medio', 'contains')"
+                            placeholder="" class="p-column-filter">
+                    </th>
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dt.filter($event.target.value, 'noticiascol', 'contains')" placeholder=""
+                            class="p-column-filter">
+                    </th>
+                    <th>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value, 'salud', 'contains')"
+                            placeholder="" class="p-column-filter">
+                    </th>
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dt.filter($event.target.value, 'sentimiento', 'contains')" placeholder=""
+                            class="p-column-filter">
+                    </th>
+                    <th>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value, 'sentiminto', 'contains')"
+                            placeholder="" class="p-column-filter">
+                    </th>
+                    <th>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value, 'texto', 'contains')"
+                            placeholder="" class="p-column-filter">
+                    </th>
+                    <th>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value, 'trabajo', 'contains')"
+                            placeholder="" class="p-column-filter">
+                    </th>
+                    <th>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value, 'titulo', 'contains')"
+                            placeholder="" class="p-column-filter">
+                    </th>
+                </tr> -->
+            </ng-template>
+            <ng-template pTemplate="body" let-columns="columns" let-data>
+                <tr class="p-selectable-row">
+                    <td *ngFor="let col of columns" class="text-center scrollbar" id="style-3"
+                        style="white-space: nowrap;overflow: overlay; height: 60px; padding-right: 3px;">
+                        <span *ngIf="col.field != 'fecha' && col.field != 'fecha2'  && col.field != 'sentimiento'">
+                            {{data[col.field]}}
+                        </span>
+                        <span
+                            *ngIf="col.field == 'fecha' || col.field == 'fecha2'">{{getDateFormat(data[col.field])}}</span>
+                        <span *ngIf="col.field == 'sentimiento'">
+                            <mat-chip-list class="horiz-center">
+                                <mat-chip class="text-white" [ngClass]="{
+                                    'bg-success': data[col.field] == 'Positivo',
+                                    'bg-danger': data[col.field] == 'Negativo',
+                                    'bg-info': data[col.field] == 'Neutro'}">{{data[col.field]}}</mat-chip>
+                            </mat-chip-list>
+                        </span>
+                        <span *ngIf="col.field == 'educacion'" >
+                            <mat-progress-bar [ngClass]="{'danger': data[col.field] < 3, 'success': data[col.field] > 6, 'warning': data[col.field] >= 3 && data[col.field] <= 6 }" mode="determinate" value="{{data[col.field] * 10}}"></mat-progress-bar>
+                        </span>
+                        <span *ngIf="col.field == 'imagen'">
+                            <mat-progress-bar [ngClass]="{'danger': data[col.field] < 3, 'success': data[col.field] > 6, 'warning': data[col.field] >= 3 && data[col.field] <= 6 }" mode="determinate" value="{{data[col.field] * 10}}"></mat-progress-bar>
+                        </span>
+                        <span *ngIf="col.field == 'salud'">
+                            <mat-progress-bar [ngClass]="{'danger': data[col.field] < 3, 'success': data[col.field] > 6, 'warning': data[col.field] >= 3 && data[col.field] <= 6 }" mode="determinate" value="{{data[col.field] * 10}}"></mat-progress-bar>
+                        </span>
+                        <span *ngIf="col.field == 'sentiminto'">
+                            <mat-progress-bar [ngClass]="{'danger': data[col.field] < 3, 'success': data[col.field] > 6, 'warning': data[col.field] >= 3 && data[col.field] <= 6 }" mode="determinate" value="{{data[col.field] * 10}}"></mat-progress-bar>
+                        </span>
+                        <span *ngIf="col.field == 'trabajo'">
+                            <mat-progress-bar [ngClass]="{'danger': data[col.field] < 3, 'success': data[col.field] > 6, 'warning': data[col.field] >= 3 && data[col.field] <= 6 }" mode="determinate" value="{{data[col.field] * 10}}"></mat-progress-bar>
+                        </span>
+                    </td>
+                    <!-- <th *ngFor="let col of columns" pSortableColumn="{{col.field}}" class="text-center">
+                        {{col.header}}
+                        <p-sortIcon field="{{col.field}}">
+                        </p-sortIcon>
+                    </th> -->
+                    <!-- <td>
+                        {{data.educacion}}
+                    </td>
+                    <td>
+                        {{data.fecha}} </td>
+                    <td>
+                        {{data.fecha2}}
+                    </td>
+                    <td>
+                        {{data.grupo}}
+                    </td>
+                    <td>
+                        {{data.imagen}}
+                    </td>
+                    <td>
+                        {{data.link}}
+                    </td>
+                    <td>
+                        {{data.medio}}
+                    </td>
+                    <td>
+                        {{data.noticiascol}}
+                    </td>
+                    <td>
+                        {{data.salud}}
+                    </td>
+                    <td>
+                        {{data.sentimiento}}
+                    </td>
+                    <td>
+                        {{data.sentiminto}}
+                    </td>
+                    <td>
+                        {{data.texto}}
+                    </td>
+                    <td>
+                        {{data.trabajo}}
+                    </td>
+                    <td>
+                        {{data.titulo}}
+                    </td> -->
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="14">No se encontraron resultados.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</mat-card>

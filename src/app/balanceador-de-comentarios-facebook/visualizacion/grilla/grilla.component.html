@@ -1,0 +1,116 @@
+<mat-card class="m-2">
+    <h3 class="text-center">Output Balanceador de Comentarios</h3>
+    <div>
+        <button mat-icon-button matTooltip="Descargar excel solo datos filtrados" type="button" (click)="exportAsXLSXSDataSelected()"
+            [matTooltipPosition]='"left"' [disabled]="loading" class="float-right">
+            <mat-icon>get_app</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Descargar excel" type="button" (click)="exportAsXLSX()"
+            [matTooltipPosition]='"left"' [disabled]="loading" class="float-right">
+            <mat-icon>get_app</mat-icon>
+        </button>
+    </div>
+    <div style="clear: both;">
+        <p-table #dt [columns]="selectedColumns" [value]="data" dataKey="url" styleClass="p-datatable-customers"
+            [rowHover]="true" [rows]="15" [showCurrentPageReport]="true" [rowsPerPageOptions]="[15,25,50]"
+            [loading]="loading" [paginator]="true"
+            currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} resultados" [filterDelay]="0"
+            [globalFilterFields]="['pag_noticia', 'url', 'cant_mg', 'cant_comentarios']">
+            <ng-template pTemplate="caption">
+                <div class="table-header">
+                    <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+                        selectedItemsLabel="{0} columnas seleccionadas" [style]="{minWidth: '200px'}"
+                        placeholder="Selecciona columnas"></p-multiSelect>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                        placeholder="Buscar" />
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th style="width: 50px;"></th>
+                    <th pSortableColumn="url">Url <p-sortIcon field="url"></p-sortIcon>
+                    </th>
+                    <th *ngFor="let col of columns" pSortableColumn="{{col.field}}" class="text-center">
+                        {{col.header}}
+                        <span *ngIf="col.header != 'Pagina' && col.header != 'Url-Facebook'">
+                            <p-sortIcon field="{{col.field}}">
+                            </p-sortIcon>
+                        </span>
+                        
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-noticia let-expanded="expanded" let-columns="columns">
+                <tr>
+                    <td>
+                        <button type="button" pButton pRipple [pRowToggler]="noticia"
+                            class="p-button-text p-button-rounded p-button-plain"
+                            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                    </td>
+                    <td  class="scrollbar" id="style-3" style="white-space: nowrap;overflow: overlay;">
+                       <a href={{noticia.url}} target="_blank">{{noticia.url}}</a> 
+                    </td>
+                    <td *ngFor="let col of columns" class="text-center scrollbar" id="style-3" style="white-space: nowrap;overflow: overlay;">
+                        <span *ngIf="col.header != 'Pagina' && col.header != 'Url-Facebook'">
+                            {{noticia[col.field]}}
+                        </span>
+                        <span *ngIf="col.header == 'Pagina'">
+                            {{noticia?.pag_noticia?.nombre_pagina}}
+                        </span>
+                        <span *ngIf="col.header == 'Url-Facebook'">
+                            <a href={{noticia?.pag_noticia?.url}} target="_blank">{{noticia?.pag_noticia?.url}}</a> 
+                        </span>
+                    </td>
+                    <!-- <td>
+                        {{noticia.pag_noticia}}
+                    </td>
+                    <td colspan="3" style="white-space: nowrap;overflow: overlay;">
+                        {{noticia.url}}
+                    </td>
+                    <td>
+                        {{noticia.cant_mg}}
+                    </td>
+                    <td>
+                        {{noticia.cant_comentarios}}
+                    </td> -->
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="rowexpansion" let-noticia>
+                <tr>
+                    <td colspan="6">
+                        <div class="p-p-3">
+                            <p-table [value]="noticia.comentarios" dataKey="usuario">
+                                <ng-template pTemplate="header">
+                <tr>
+                    <th colspan="1" style="width: 50px;"></th>
+                    <th colspan="1" pSortableColumn="usuario">Usuario <p-sortIcon field="usuario"></p-sortIcon>
+                    </th>
+                    <th colspan="4" pSortableColumn="comentario">Comentario <p-sortIcon field="comentario"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-comentario>
+                <tr>
+                    <th></th>
+                    <td colspan="1">{{comentario.usuario}}</td>
+                    <td colspan="4">{{comentario.comentario}}</td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="5">No se encontraron comentarios</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    </td>
+    </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7">No se encontraron resultados.</td>
+        </tr>
+    </ng-template>
+    </p-table>
+    </div>
+</mat-card>

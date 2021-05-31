@@ -1,0 +1,676 @@
+<p-toast position="bottom-center"></p-toast>
+
+<mat-tab-group mat-stretch-tabs [color]="color" [selectedIndex]="selected.value"
+    (selectedIndexChange)="selected.setValue($event)">
+    <mat-tab label="Listar reglas">
+        <ng-template mat-tab-label>
+            <mat-icon>list</mat-icon>
+            Listar reglas
+        </ng-template>
+        <mat-card class="m-2">
+            <h3 class="text-center">Listar reglas</h3>
+            <p class="text-right">
+                <button mat-icon-button color="primary" (click)="actualizar()" matTooltip="Recargar datos"
+                    [matTooltipPosition]='"left"'>
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </p>
+            <div class="horiz-center sticky">
+                <div *ngIf="dataSource.data.length == 0">
+                    Cargando datos ...
+                </div>
+                <table *ngIf="dataSource.data.length > 0" mat-table [dataSource]="dataSource"
+                    class="table-hover mat-elevation-z8 col-lg-10 col-md-10 col-sm-12">
+
+                    <ng-container matColumnDef="regla">
+                        <th mat-header-cell *matHeaderCellDef>Regla </th>
+                        <td mat-cell *matCellDef="let element"> {{element?.descripcion_publicador}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="origen">
+                        <th mat-header-cell *matHeaderCellDef> Origen </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span *ngFor="let item of element.origen">
+                                {{item.descripcion_origen}}
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="destino">
+                        <th mat-header-cell *matHeaderCellDef> Destino </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span *ngFor="let item of element.destino">
+                                {{item.descripcion_destino}}
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="provincias">
+                        <th mat-header-cell *matHeaderCellDef> Provincias </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span *ngFor="let item of element.provincias">
+                                {{item.nombre_provincia}}
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="temas">
+                        <th mat-header-cell *matHeaderCellDef> Temas </th>
+                        <td mat-cell *matCellDef="let element" matTooltipClass="my-custom-tooltip"
+                            matTooltip="{{element.temas}}">
+                            <mat-chip-list aria-label="temas">
+                                <span *ngFor="let item of element.temas; let i=index">
+                                    <mat-chip *ngIf="i < 3">
+                                        {{item}} 
+                                    </mat-chip>
+                                </span>
+                                <mat-chip *ngIf="element.temas.length > 3">
+                                    ...
+                                </mat-chip>
+
+                            </mat-chip-list>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="url">
+                        <th mat-header-cell *matHeaderCellDef> Url </th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.url}}
+                            <!-- <span *ngFor="let item of element.destino">
+                                {{item.descripcion_destino}}
+                            </span> -->
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="eliminar">
+                        <th mat-header-cell *matHeaderCellDef> Eliminar </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button color="warn" (click)="eliminar(element)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="editar">
+                        <th mat-header-cell *matHeaderCellDef> Editar </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button color="accent" (click)="getOneRegla(element)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Publicador">
+        <ng-template mat-tab-label>
+            <!-- <mat-icon>psychology</mat-icon> -->
+            Crear regla de publicación
+        </ng-template>
+
+        <mat-card class="m-2">
+            <h3 class="vertic-center horiz-center">
+                <p>
+                    Publicador
+                </p>
+            </h3>
+            <mat-horizontal-stepper [linear]="isLinear" #stepper>
+                <mat-step>
+                    <ng-template matStepLabel>Origen de datos</ng-template>
+                    <!-- <section class="example-section">
+                        <span class="example-list-section">
+                            <mat-checkbox class="example-margin" [checked]="allComplete"
+                                [indeterminate]="someComplete()" (change)="setAll($event.checked)">
+                                {{task.name}}
+                            </mat-checkbox>
+                        </span>
+                        <span class="example-list-section">
+                            <ul>
+                                <li *ngFor="let subtask of task.subtasks">
+                                    <mat-checkbox [(ngModel)]="subtask.completed" [color]="subtask.color"
+                                        (ngModelChange)="updateAllComplete()" [ngModelOptions]="{standalone: true}">
+                                        {{subtask.name}}
+                                    </mat-checkbox>
+                                </li>
+                            </ul>
+                        </span>
+                    </section> -->
+                    <label id="example-radio-group-label">Selecciona el origen de datos:</label>
+                    <mat-radio-group class="row pl-5" [(ngModel)]="origenSelected">
+                        <mat-radio-button class="col-6" *ngFor="let ori of origenes" [value]="ori.id_origen">
+                            {{ori?.descripcion_origen}}
+                        </mat-radio-button>
+                    </mat-radio-group>
+
+                    <!-- <div class="row vertic-center">
+                        <div class="col-12">
+                            <button mat-button color="primary" type="button" (click)="openCA()">Ingresá cuentas de WA.</button>
+                        </div>
+                        <div class="row col-12 " *ngIf="cuantasWA">
+
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12" >
+                                <mat-label>Cuentas WA</mat-label>
+                                <mat-select multiple>
+                                    <mat-option *ngFor="let cuenta of listaCuentas" value={{cuenta.value}}>
+                                        {{cuenta.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class=" mt-2 ccol-lg-6 col-md-6 col-sm-12">
+                                <p-fileUpload styleClass="file" name="myfile[]" mode="basic"
+                                    chooseLabel="Cargar Cuentas WA .CSV" accept=".csv" class="p-button-sm"></p-fileUpload>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="row vertic-center">
+                        <div class="col-12">
+                            <button mat-button color="primary" type="button" (click)="openTextoLibre()">Ingresá texto
+                                libre.</button>
+                        </div>
+                        <div class="col-12" *ngIf="textoLibre">
+                            <mat-form-field appearance="outline" class="col-12">
+                                <mat-label>Título</mat-label>
+                                <input matInput placeholder="" type="" />
+                                <button mat-button *ngIf="fp.Temas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="fp.Temas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="col-12">
+                                <mat-label>Descripción</mat-label>
+                                <textarea matInput placeholder="" type=""></textarea>
+                                <button mat-button *ngIf="fp.Temas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="fp.Temas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <!-- <mat-error>
+                                    Ingrese tema
+                                </mat-error> -->
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="col-12">
+                                <mat-label>URL Imagen</mat-label>
+                                <input matInput placeholder="" type="" [(ngModel)]="imagenLibre">
+                                <button mat-button *ngIf="fp.Temas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="fp.Temas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                            <img *ngIf="imagenLibre" src="{{imagenLibre}}" alt="Previsualizacion"
+                                class="col-md-4 col-sm-12">
+
+                        </div>
+
+                    </div>
+
+                    <div class="horiz-center">
+                        <button mat-raised-button matStepperNext color="primary"
+                            (click)="enviarOrigenes()">Siguiente</button>
+                    </div>
+                </mat-step>
+
+                <mat-step>
+                    <ng-template matStepLabel>Seleccionar Destino</ng-template>
+                    <section class="example-section">
+                        <span class="example-list-section">
+                            <mat-checkbox class="example-margin" [checked]="allCompleteDestino"
+                                [indeterminate]="someCompleteDestino()" (change)="setAllDestino($event.checked)">
+                                <h5>{{taskDestinos.name}}</h5>
+                            </mat-checkbox>
+                        </span>
+                        <span class="example-list-section">
+                            <ul>
+                                <li *ngFor="let subtask of taskDestinos.subtasks" class="mt-3">
+                                    <mat-checkbox [(ngModel)]="subtask.completed" [color]="subtask.color"
+                                        (ngModelChange)="updateAllCompleteDestino()"
+                                        [ngModelOptions]="{standalone: true}">
+                                        <h5>{{subtask.name}}</h5>
+                                    </mat-checkbox>
+
+                                    <div class="row ml-5 shadow p-3 mb-5 rounded"
+                                        *ngIf="subtask.id == 1 && subtask.completed">
+                                        <div class="col-md-6 col-sm-12">
+                                            <h6>Cuentas
+                                                <button mat-icon-button color="accent"
+                                                    (click)="agregarCuentaWordpress()"
+                                                    aria-label="Agregar una cuenta de wordpress nueva"
+                                                    matTooltip="Agregar una cuenta wordpress nueva"
+                                                    [matTooltipPosition]='"left"'>
+                                                    <mat-icon>add</mat-icon>
+                                                </button>
+                                            </h6>
+                                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                                <mat-label>Portales</mat-label>
+                                                <mat-select multiple [(ngModel)]="postalesUrl">
+                                                    <mat-option *ngFor="let item of cuentasWordpress"
+                                                        value={{item?.portal}}>
+                                                        {{item?.usuario}} - {{item?.portal}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <h6 class="pt-2 pb-2">Portales</h6>
+                                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                                <mat-label>Portales</mat-label>
+                                                <mat-select multiple>
+                                                    <mat-option *ngFor="let portal of listaPortales"
+                                                        value={{portal.id_portales_wordpress}}>
+                                                        {{portal.link}}
+                                                    </mat-option>
+                                                </mat-select>
+                                                <!-- <mat-error>
+                                                    Seleccione una cuenta
+                                                </mat-error> -->
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="row ml-5 shadow p-3 mb-5 rounded horiz-center"
+                                        *ngIf="subtask.id != 1 && subtask.completed">
+                                        <p-fileUpload styleClass="file" name="myfile[]" mode="basic"
+                                            chooseLabel="Cargar Cuentas .CSV" accept=".csv" class="p-button-sm">
+                                        </p-fileUpload>
+                                    </div>
+                                </li>
+                            </ul>
+                        </span>
+                    </section>
+                    <div class="horiz-center">
+                        <button mat-raised-button matStepperNext color="primary"
+                            (click)="enviarDestinos()">Siguiente</button>
+                    </div>
+                </mat-step>
+
+                <mat-step *ngIf="portalActive">
+                    <ng-template matStepLabel>Portal</ng-template>
+                    <form [formGroup]="formPortal">
+                        <div class="horiz-center row">
+
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Provincias</mat-label>
+                                <mat-select multiple formControlName="Id_provincias">
+                                    <mat-option *ngFor="let prov of provincias" value={{prov.id_provincia}}>
+                                        {{prov.nombre_provincia}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    Seleccione una provincia
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Filas del origen de datos múltiplos de:</mat-label>
+                                <input matInput placeholder="" formControlName="multiplos" type="number">
+                                <!-- <button mat-button *ngIf="fp.multiplos.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="fp.multiplos.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button> -->
+                                <mat-error>
+                                    Ingrese un número
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+                        <div class="horiz-center row">
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Temas</mat-label>
+                                <input matInput placeholder="Tema1, tema2, tema3" formControlName="Temas" type="text">
+                                <button mat-button *ngIf="fp.Temas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="fp.Temas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese tema
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>No Temas</mat-label>
+                                <input matInput placeholder="Tema1, tema2, tema3" formControlName="NoTemas" type="text">
+                                <button mat-button *ngIf="fp.NoTemas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="fp.NoTemas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese no temas
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+
+                        <div class="row">
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Cantidad Publicaciones Diarias</mat-label>
+                                <input min="0" matInput placeholder="" formControlName="CantidadPublicacionesDiarias"
+                                    type="number">
+                                <button mat-button *ngIf="fp.CantidadPublicacionesDiarias.value" matSuffix
+                                    mat-icon-button aria-label="Clear"
+                                    (click)="fp.CantidadPublicacionesDiarias.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese cantidad
+                                </mat-error>
+                            </mat-form-field>
+
+
+                        </div>
+                        <div class="horiz-center">
+                            <button mat-button matStepperPrevious>Volver</button>
+                            <button mat-raised-button matStepperNext color="primary"
+                                (click)="submitPortal()">Siguiente</button>
+                        </div>
+
+
+
+                    </form>
+                </mat-step>
+                <mat-step *ngIf="facebookActive">
+                    <ng-template matStepLabel>Facebook</ng-template>
+                    <form [formGroup]="formFacebook">
+                        <div class="horiz-center row">
+
+
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Cuentas</mat-label>
+                                <input matInput placeholder="usuario1, usuario2, usuario3" formControlName="Cuentas"
+                                    type="text">
+                                <button mat-button *ngIf="ff.Cuentas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="ff.Cuentas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese cuentas, separadas por coma
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Temas</mat-label>
+                                <input matInput placeholder="Tema1, tema2, tema3" formControlName="Temas" type="text">
+                                <button mat-button *ngIf="ff.Temas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="ff.Temas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese tema
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+
+                        <div class="horiz-center">
+                            <button mat-button matStepperPrevious>Volver</button>
+                            <button mat-raised-button matStepperNext color="primary"
+                                (click)="submitPortal()">Siguiente</button>
+                        </div>
+                    </form>
+
+                </mat-step>
+                <mat-step *ngIf="twitterActive">
+                    <ng-template matStepLabel>Twitter</ng-template>
+                    <form [formGroup]="formFacebook">
+                        <div class="horiz-center row">
+
+
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Cuentas</mat-label>
+                                <input matInput placeholder="@usuario1, @usuario2, @usuario3" formControlName="Cuentas"
+                                    type="text">
+                                <button mat-button *ngIf="ff.Cuentas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="ff.Cuentas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese cuentas, separadas por coma
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Temas</mat-label>
+                                <input matInput placeholder="Tema1, tema2, tema3" formControlName="Temas" type="text">
+                                <button mat-button *ngIf="ff.Temas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="ff.Temas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese tema
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+                        <div class="horiz-center">
+                            <button mat-button matStepperPrevious>Volver</button>
+                            <button mat-raised-button matStepperNext color="primary"
+                                (click)="submitPortal()">Siguiente</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step *ngIf="ivrActive">
+                    <ng-template matStepLabel>IVR</ng-template>
+                    <form [formGroup]="formFacebook">
+                        <div class="horiz-center row">
+
+
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Cuentas</mat-label>
+                                <input matInput placeholder="cuenta1, cuenta2, cuenta3" formControlName="Cuentas"
+                                    type="text">
+                                <button mat-button *ngIf="ff.Cuentas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="ff.Cuentas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese cuentas, separadas por coma
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Temas</mat-label>
+                                <input matInput placeholder="Tema1, tema2, tema3" formControlName="Temas" type="text">
+                                <button mat-button *ngIf="ff.Temas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="ff.Temas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese tema
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+                        <div class="horiz-center">
+                            <button mat-button matStepperPrevious>Volver</button>
+                            <button mat-raised-button matStepperNext color="primary"
+                                (click)="submitPortal()">Siguiente</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step *ngIf="multicanalidadActive">
+                    <ng-template matStepLabel>Multicanalidad</ng-template>
+                    <form [formGroup]="formFacebook">
+                        <div class="horiz-center row">
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Cuentas</mat-label>
+                                <input matInput placeholder="" formControlName="Cuentas" type="text">
+                                <button mat-button *ngIf="ff.Cuentas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="ff.Cuentas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese cuentas, separadas por coma
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Temas</mat-label>
+                                <input matInput placeholder="Tema1, tema2, tema3" formControlName="Temas" type="text">
+                                <button mat-button *ngIf="ff.Temas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="ff.Temas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese tema
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+                        <div class="horiz-center">
+                            <button mat-button matStepperPrevious>Volver</button>
+                            <button mat-raised-button matStepperNext color="primary"
+                                (click)="submitPortal()">Siguiente</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step *ngIf="chatbotActive">
+                    <ng-template matStepLabel>Chatbot</ng-template>
+                    <form [formGroup]="formFacebook">
+                        <div class="horiz-center row">
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Cuentas</mat-label>
+                                <input matInput placeholder="" formControlName="Cuentas" type="text">
+                                <button mat-button *ngIf="ff.Cuentas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="ff.Cuentas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese cuentas, separadas por coma
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Temas</mat-label>
+                                <input matInput placeholder="Tema1, tema2, tema3" formControlName="Temas" type="text">
+                                <button mat-button *ngIf="ff.Temas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="ff.Temas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese tema
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+
+                        <div class="horiz-center">
+                            <button mat-button matStepperPrevious>Volver</button>
+                            <button mat-raised-button matStepperNext color="primary"
+                                (click)="submitPortal()">Siguiente</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step *ngIf="instagramActive">
+                    <ng-template matStepLabel>Instagram</ng-template>
+                    <form [formGroup]="formFacebook">
+                        <div class="horiz-center row">
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Cuentas</mat-label>
+                                <input matInput placeholder="@usuario1, @usuario2, @usuario3" formControlName="Cuentas"
+                                    type="text">
+                                <button mat-button *ngIf="ff.Cuentas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="ff.Cuentas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese cuentas, separadas por coma
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Temas</mat-label>
+                                <input matInput placeholder="Tema1, tema2, tema3" formControlName="Temas" type="text">
+                                <button mat-button *ngIf="ff.Temas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="ff.Temas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese tema
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+                        <div class="horiz-center">
+                            <button mat-button matStepperPrevious>Volver</button>
+                            <button mat-raised-button matStepperNext color="primary"
+                                (click)="submitPortal()">Siguiente</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step *ngIf="whatsappActive">
+                    <ng-template matStepLabel>Whatsapp</ng-template>
+                    <form [formGroup]="formFacebook">
+                        <!-- <div class="horiz-center row">
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Cuentas</mat-label>
+                                <input matInput placeholder="+5494324324, +549346754353" formControlName="Cuentas" type="text">
+                                <button mat-button *ngIf="ff.Cuentas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="ff.Cuentas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese cuentas, separadas por coma
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Temas</mat-label>
+                                <input matInput placeholder="Tema1, tema2, tema3" formControlName="Temas" type="text">
+                                <button mat-button *ngIf="ff.Temas.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="ff.Temas.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese tema
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div> -->
+                        <div class="row col-12 ">
+
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Cuentas WA</mat-label>
+                                <mat-select multiple>
+                                    <mat-option *ngFor="let cuenta of listaCuentas" value={{cuenta.value}}>
+                                        {{cuenta.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class=" mt-2 ccol-lg-6 col-md-6 col-sm-12">
+                                <p-fileUpload styleClass="file" name="myfile[]" mode="basic"
+                                    chooseLabel="Cargar Cuentas WA .CSV" accept=".csv" class="p-button-sm">
+                                </p-fileUpload>
+                            </div>
+                        </div>
+                        <div class="horiz-center">
+                            <button mat-button matStepperPrevious>Volver</button>
+                            <button mat-raised-button matStepperNext color="primary"
+                                (click)="submitPortal()">Siguiente</button>
+                        </div>
+                    </form>
+                </mat-step>
+
+                <mat-step>
+                    <ng-template matStepLabel>Crear Regla</ng-template>
+                    <form [formGroup]="formRule">
+                        <div class="horiz-center row">
+                            <mat-form-field appearance="outline" class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-label>Nombre de la regla</mat-label>
+                                <input matInput placeholder="" formControlName="Descripcion_publicador" type="text"
+                                    required>
+                                <button mat-button *ngIf="fr.Descripcion_publicador.value" matSuffix mat-icon-button
+                                    aria-label="Clear" (click)="fr.Descripcion_publicador.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error>
+                                    Ingrese nombre de la regla
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                    </form>
+                    <div class="text-center">
+                        <button color="primary" type="button" (click)="postPrerule()" mat-raised-button>Crear
+                            regla</button>
+                    </div>
+                </mat-step>
+            </mat-horizontal-stepper>
+        </mat-card>
+
+    </mat-tab>
+</mat-tab-group>

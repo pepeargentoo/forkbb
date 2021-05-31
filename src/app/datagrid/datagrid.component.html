@@ -1,0 +1,81 @@
+<p-table #dt [value]="data" dataKey="url" styleClass="p-datatable-customers" [rowHover]="true" [rows]="5"
+    [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,25,50]" [loading]="loading" [paginator]="true"
+    currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} resultados" [filterDelay]="0"
+    [globalFilterFields]="['pag_noticia', 'url']">
+    <ng-template pTemplate="caption">
+        <div class="table-header">
+            Lista
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                    placeholder="" />
+            </span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th></th>
+            <th pSortableColumn="pag_noticia">Pagina <p-sortIcon field="pag_noticia"></p-sortIcon>
+            </th>
+            <th colspan="3" pSortableColumn="url">Url <p-sortIcon field="url"></p-sortIcon>
+            </th>
+            <th pSortableColumn="cant_mg">Cantidad likes <p-sortIcon field="cant_mg"></p-sortIcon>
+            </th>
+            <th pSortableColumn="cant_comentarios">Cantidad comentarios <p-sortIcon field="cant_comentarios"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-noticia let-expanded="expanded">
+        <tr >
+            <td>
+                <button type="button" pButton pRipple [pRowToggler]="noticia" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+            </td>
+            <td>
+                {{noticia.pag_noticia}}
+            </td>
+            <td colspan="3">
+                {{noticia.url}}
+            </td>
+            <td>
+                {{noticia.cant_mg}}
+            </td>
+            <td>
+                {{noticia.cant_comentarios}}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-noticia>
+        <tr>
+            <td colspan="7">
+                <div class="p-p-3">
+                    <p-table [value]="noticia.comentarios" dataKey="usuario">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th></th>
+                                <th colspan="2" pSortableColumn="usuario">Usuario <p-sortIcon field="usuario"></p-sortIcon></th>
+                                <th colspan="4" pSortableColumn="comentario">Comentario <p-sortIcon field="comentario"></p-sortIcon></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-comentario>
+                            <tr>
+                                <th></th>
+                                <td colspan="2">{{comentario.usuario}}</td>
+                                <td colspan="4">{{comentario.comentario}}</td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="5">There are no order for this product yet.</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7">No se encontraron resultados.</td>
+        </tr>
+    </ng-template>
+</p-table>

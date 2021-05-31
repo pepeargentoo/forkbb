@@ -1,0 +1,26 @@
+<mat-card class="m-2">
+    <h3 class="text-center">Facebook</h3>
+    <form action="" [formGroup]="form">
+        <div class="horiz-center row">
+            <mat-form-field appearance="outline" class="col-lg-8 col-md-7 col-sm-12">
+                <mat-label>URL</mat-label>
+                <input matInput placeholder="www.facebook.com" formControlName="url">
+                <button mat-button *ngIf="url" matSuffix mat-icon-button aria-label="Clear" (click)="url=''">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+         
+            <mat-error *ngIf="!url && enviado" class="col-lg-8 col-md-7 col-sm-12">
+                Ingrese URL
+            </mat-error>
+        </div>
+        <div class="text-center">
+            <button mat-raised-button color="primary" (click)="getFacebook()" type="button">Enviar</button>
+        </div>
+
+    </form>
+</mat-card>
+
+<mat-card class="m-2">
+<h3 class="text-center">Resultado</h3>
+</mat-card>

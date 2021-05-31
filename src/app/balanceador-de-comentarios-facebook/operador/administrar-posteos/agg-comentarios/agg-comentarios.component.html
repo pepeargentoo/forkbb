@@ -1,0 +1,80 @@
+<h1 mat-dialog-title class="mb-0">{{ data.title }}</h1>
+<div mat-dialog-content>
+    <p class="m-0 font-italic">
+    <p class="font-italic">
+        {{data?.msj?.pag_noticia?.nombre_pagina}}<br>{{data?.msj?.pag_noticia?.url}}
+    </p>
+    <!-- <div class="horiz-center row">
+        <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Comentario</mat-label>
+            
+            <textarea rows="10" matInput placeholder="link" [(ngModel)]="comentario" required></textarea>
+            <button mat-button *ngIf="comentario" matSuffix mat-icon-button aria-label="Clear"
+                (click)="comentario = null">
+                <mat-icon>close</mat-icon>
+            </button>
+            <mat-error>
+                Ingrese comentario
+            </mat-error>
+        </mat-form-field>
+    </div> -->
+    <div class="horiz-center row">
+        <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+            <mat-label>Tipo de comentario</mat-label>
+            <mat-select [(ngModel)]="tipo" (ngModelChange)="changeFn($event)">
+                <mat-option *ngFor="let item of tiposComentarios" value="{{item.id_topico}}">{{item.topico}}
+                </mat-option>
+            </mat-select>
+            <mat-error>
+                Seleccione un tipo
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <label *ngIf="tipo && comentarios?.length > 1" id="example-radio-group-label">Selecciona un comentario</label>
+    <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+        [(ngModel)]="comentarioSelected">
+        <mat-radio-button class="example-radio-button" *ngFor="let comentario of comentarios" [value]="comentario">
+            {{comentario.comentario}}
+        </mat-radio-button>
+    </mat-radio-group>
+    <p *ngIf="tipo && comentarios?.length < 1">No se encontraron resultados</p>
+
+    <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="dataSource.data.length > 0">
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()"
+                          [aria-label]="checkboxLabel()">
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(row) : null"
+                          [checked]="selection.isSelected(row)"
+                          [aria-label]="checkboxLabel(row)">
+            </mat-checkbox>
+          </td>
+          <td mat-footer-cell *matFooterCellDef> Comentarios seleccionados </td>
+        </ng-container>
+     
+              <ng-container matColumnDef="Comentario">
+          <th mat-header-cell *matHeaderCellDef> Comentario </th>
+          <td mat-cell *matCellDef="let element"> {{element.comentario}} </td>
+          <td mat-footer-cell *matFooterCellDef> {{count() }} </td>
+        </ng-container>
+
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+            (click)="selection.toggle(row)">
+        </tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+
+      </table> -->
+</div>
+<div mat-dialog-actions class="horiz-center">
+    <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="data" cdkFocusInitial>Aceptar</button>
+</div>

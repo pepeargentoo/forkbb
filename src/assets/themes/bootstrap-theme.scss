@@ -1,0 +1,21 @@
+$primary: #2c5d96;
+$secondary: #f39c12;
+$succes: #00a65a;
+$dark: #000000;
+$light: #bcbec0;
+$gray: #6c757d;
+$aqua: #00c0ef;
+$red: #dd4b39; 
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "succes": $succes,
+  "dark": $dark,
+  "light": $light,
+  "gray": $gray,
+  "aqua": $aqua,
+  "red": $red,
+);
+
+@import "bootstrap";

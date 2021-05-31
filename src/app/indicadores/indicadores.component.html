@@ -1,0 +1,45 @@
+<div class="row horiz-center m-1 card-columns">
+    <div *ngFor="let item of items; let i=index" class="mt-1">
+        <div class="card bg-primary h-100" style="width: 160px;" [routerLink]="[item.url]" [ngClass]=item.classColor>
+            <div class="card-header bg-transparent border-transparent text-white font-weight-bold">
+                <i class="pi" [ngClass]=item.icon style="font-size: 0.8rem"></i>
+                {{item.nombre}} 
+            </div>
+            <div class="card-body text-white p-1" [ngClass]=item.classBorder>
+                <!-- <h5 class="card-title">{{item.nombre}}</h5> -->
+                <ul>
+                    <li *ngFor="let indicador of item.indicadores" class="card-text">{{indicador.nombre}} :
+                        {{indicador.valor}}
+                    </li>
+                </ul>
+            </div>
+            <!-- <div class="card-footer bg-transparent border-success">Footer</div> -->
+        </div>
+    </div>
+</div>
+<div class="row m-1">
+    <div class="p-1 col-lg-4 col-md-6 col-sm-6 col-xs-12 h-100">
+        <mat-card class="m-1">
+            <p-chart type="bar" [data]="data"></p-chart>
+        </mat-card>
+    </div>
+  
+    <div class="p-1 col-lg-4 col-md-6 col-sm-6 col-xs-12 h-100">
+        <mat-card class="m-1">
+            <!-- <p-toast [style]="{marginTop: '80px'}"></p-toast> -->
+            <p-chart type="line" [data]="data" (onDataSelect)="selectData($event)"></p-chart>
+        </mat-card>
+    </div>
+
+    <div class="p-1 col-lg-4 col-md-6 col-sm-6 col-xs-12 h-100">
+        <mat-card class="m-1">
+            <p-chart type="pie" [data]="dataPie"></p-chart>
+        </mat-card>
+        <!-- <div class="col-12">
+            <mat-card class="m-1">
+                <p-chart type="doughnut" [data]="dataDonus"></p-chart>
+            </mat-card>
+        </div> -->
+    </div>
+ 
+</div>

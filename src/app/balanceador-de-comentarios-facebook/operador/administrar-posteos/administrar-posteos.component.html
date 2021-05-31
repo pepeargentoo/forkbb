@@ -1,0 +1,400 @@
+<p-toast position="bottom-center"></p-toast>
+
+<mat-tab-group mat-stretch-tabs [color]="color" [selectedIndex]="selected.value"
+    (selectedIndexChange)="selected.setValue($event)">
+    <mat-tab label="Listado de posteos">
+        <ng-template mat-tab-label>
+            <mat-icon>list</mat-icon>
+            Listado de posteos
+        </ng-template>
+        <mat-card class="m-2">
+            <!-- <p-orderList [value]="noticias" [listStyle]="{'height':'auto'}" header="Lista de Links" filterBy="url"
+                filterPlaceholder="Filtrar por url" dragdrop="true">
+                <ng-template let-product pTemplate="item">
+                    <div class="product-item">
+                        <div class="product-list-detail">
+                            <h5 class="p-mb-2">{{product.pag_noticia}}</h5>
+                            <span class="product-category">{{product.url}}</span>
+                        </div>
+                        <div class="product-list-action">
+                            <h6 class="p-mb-2">
+                                <i class="pi pi-comment product-category-icon"></i>
+                                {{product.cant_comentarios}}
+                            </h6>
+                            <span [class]="'product-badge status-'">
+                                <i class="pi pi-heart product-category-icon"></i>{{product.cant_mg}}
+                            </span>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-orderList> -->
+            <h3 class="text-center">Listado de posteos</h3>
+            <p class="text-right">
+                <button mat-icon-button color="primary" (click)="actualizar()" matTooltip="Recargar datos"
+                    [matTooltipPosition]='"left"'>
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </p>
+            <div class="horiz-center sticky">
+                <div *ngIf="dataSource.data.length == 0">
+                    Cargando datos ...
+                </div>
+                <!-- <table multiTemplateDataRows *ngIf="dataSource.data.length > 0" mat-table [dataSource]="dataSource"
+                    class="table-hover mat-elevation-z8 col-lg-10 col-md-12 col-sm-12">
+
+                    <ng-container matColumnDef="pagina">
+                        <th mat-header-cell *matHeaderCellDef> Pagina </th>
+                        <td mat-cell *matCellDef="let element"> {{element?.pag_noticia}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="url">
+                        <th mat-header-cell *matHeaderCellDef> URL </th>
+                        <td mat-cell *matCellDef="let element"> {{element?.url}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="likes">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Likes </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="vertic-center horiz-center">
+                                <mat-icon color="primary">thumb_up_alt</mat-icon>
+                                {{ element?.cant_mg }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="comentarios">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Comentarios </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="vertic-center horiz-center">
+                                <mat-icon color="primary">comment</mat-icon>
+                                {{element?.cant_comentarios}}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="comentar">
+                        <th mat-header-cell *matHeaderCellDef> Comentar </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-mini-fab color="accent" (click)="addComentario(element)">
+                                <mat-icon>add_comment</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="expandedDetail">
+                        <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                            <div class="example-element-detail"
+                                [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                                <div class="example-element-diagram">
+                                    {{ element | json }}
+                                </div>
+                            </div>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="example-element-row"
+                        [class.example-expanded-row]="expandedElement === element"
+                        (click)="expandedElement = expandedElement === element ? null : element"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+ *ngIf="dataSource.data.length > 0"
+                </table> -->
+
+                <table [ngStyle]="{'display': dataSource.data.length === 0 ? 'none' : 'table' }" mat-table
+                    [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8 m-3 col-10 table-hover"
+                    matSort>
+
+                    <ng-container matColumnDef="pagina">
+                        <th mat-header-cell *matHeaderCellDef> Pagina </th>
+                        <td mat-cell *matCellDef="let element"> {{element?.pag_noticia?.nombre_pagina}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="url">
+                        <th mat-header-cell *matHeaderCellDef> URL </th>
+                        <td mat-cell *matCellDef="let element">
+                            <a href={{element?.url}} target="_blank">
+                                {{element?.pag_noticia?.url}} 
+                                <!-- {{ getShortUrl(element?.url)}} -->
+                            </a>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="likes">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">
+                            likes
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="text-center">
+                            {{ element?.cant_mg }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="comentarios">
+                        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header>
+                            comentarios
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="text-center">
+                            {{element?.cant_comentarios}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ver-comentarios">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">
+                            Ver Comentarios
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="text-center">
+                            <button mat-icon-button color="accent" (click)="mostrarComentarios(element)">
+                                <mat-icon>visibility</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="comentar">
+                        <th mat-header-cell *matHeaderCellDef> Comentar </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button color="accent" (click)="addComentario(element)">
+                                <mat-icon>add_comment</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="expandedDetail">
+                        <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                            <!-- <div class="example-element-detail"
+                                [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+
+                                <div>
+                                    <p>Comentarios</p>
+                                    <table>
+                                        <tr *ngFor="let com of element.comentarios">
+                                            <th>{{com.usuario}}</th>
+                                            <td> 
+                                                {{com.comentario}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div> -->
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true">
+                    </tr>
+                    <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row">
+                    </tr>
+                    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+                </table>
+            </div>
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Administrar posteos a balancear">
+
+        <mat-card class="m-2">
+            <h3 class="text-center">Administrar posteos a balancear</h3>
+            <form [formGroup]="form" (ngSubmit)="asignar()">
+                <div class="horiz-center row">
+                    <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>URL</mat-label>
+                        <input matInput placeholder="link" formControlName="page" required>
+                        <button mat-button *ngIf="f.page.value" matSuffix mat-icon-button aria-label="Clear"
+                            (click)="f.page.setValue(null)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <mat-error>
+                            Ingrese url
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="text-center">
+                    <button mat-raised-button color="primary" type="submit">Aceptar</button>
+                </div>
+
+            </form>
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Administrar comentarios">
+        <ng-template mat-tab-label>
+            <mat-icon>insert_comment</mat-icon>
+            Administrar comentarios
+        </ng-template>
+        <mat-card class="m-2">
+            <h3 class="text-center">Administrar comentarios</h3>
+            <form [formGroup]="formComentarios" (ngSubmit)="postComentario()">
+                <div class="horiz-center row">
+                    <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>Comentario</mat-label>
+                        <textarea matInput placeholder="" formControlName="comentario" required></textarea>
+                        <button mat-button *ngIf="fc.comentario.value" matSuffix mat-icon-button aria-label="Clear"
+                            (click)="fc.comentario.setValue(null)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <mat-error>
+                            Ingrese comentario
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="horiz-center row">
+                    <!-- <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>Tipo</mat-label>
+                        <input matInput placeholder="link" formControlName="topico" required>
+                        <button mat-button *ngIf="fc.topico.value" matSuffix mat-icon-button aria-label="Clear"
+                            (click)="fc.topico.setValue(null)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <mat-error>
+                            Ingrese tipo
+                        </mat-error>
+                    </mat-form-field> -->
+
+                    <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>Tipo de comentario</mat-label>
+                        <mat-select formControlName="id_topico">
+                            <mat-option *ngFor="let item of topicos" value="{{item.id_topico}}">{{item.topico}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Seleccione un tipo
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="text-center">
+                    <button mat-raised-button color="primary" type="submit">Aceptar</button>
+                </div>
+
+            </form>
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Comentar">
+        <ng-template mat-tab-label>
+            <mat-icon>insert_comment</mat-icon>
+            Comentar
+        </ng-template>
+        <mat-card class="m-2">
+            <h3 class="text-center">Comentar</h3>
+            <form [formGroup]="formComentar" (ngSubmit)="postComentar()">
+                <div class="horiz-center row">
+                   <div class="col-12">
+                        <label for="">Usuario</label>
+                        <!-- <button mat-icon-button type="button" color="accent" class="mt-2" (click)="addUser()">
+                            <mat-icon>add</mat-icon>
+                        </button> -->
+                    </div>
+                    <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>Seleccione usuario</mat-label>
+                        <mat-select formControlName="user">
+                            <mat-option value="3424227826" selected>Sara Junco
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Seleccione un usuario
+                        </mat-error>
+                    </mat-form-field>
+                   <!--   <div class="row col-12" *ngFor="let user of users?.controls; let i=index">
+                        <div class="form-container" class="col-12" [formGroup]="user">
+                            <label> {{i+1}}</label>
+                            <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
+                                <mat-label>Usuario</mat-label>
+                                <input matInput placeholder="" formControlName="user" required>
+                                <mat-error>
+                                    Ingrese usuario
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
+                                <mat-label>Contraseña</mat-label>
+                                <input matInput placeholder="" formControlName="password" required>
+                                <mat-error>
+                                    Ingrese contraseña
+                                </mat-error>
+                            </mat-form-field>
+                            <button mat-icon-button type="button" class="col-1" color="warn" class="mt-2" (click)="removeUserAt(i)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>                   -->
+                </div>
+                <div class="horiz-center row">
+                    <div class="col-12">
+                        <label for="">URL</label>
+                        <button mat-icon-button type="button" color="accent" class="mt-2" (click)="addUrl()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                    <div class="row col-12" *ngFor="let url of urls?.controls; let i=index">
+                        <div class="form-container horiz-center col-12  mt-1 mb-2" [formGroup]="url">
+                            <label> {{i+1}}</label>
+                            <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
+                                <mat-label>URL</mat-label>
+                                <input matInput placeholder="" formControlName="url" required>
+                                <!-- <button mat-button *ngIf="fcr.user.value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="fcr.user.setValue(null)">
+                                    <mat-icon>close</mat-icon>
+                                </button> -->
+                                <mat-error>
+                                    Ingrese usuario
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
+                                <mat-label>Comentario</mat-label>
+                                <textarea matInput placeholder="" formControlName="comentario"></textarea>
+                                <mat-hint>Si no completa este dato, se tomará un comentario al azar de la base de datos</mat-hint>
+
+                            </mat-form-field>
+                            <button mat-icon-button type="button" class="col-1" color="warn" class="mt-2" (click)="removeUrlAt(i)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                      
+                    </div>  
+                </div>
+
+                <!-- <div class="horiz-center row">
+                    <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>Tipo de comentario</mat-label>
+                        <mat-select [(ngModel)]="topicoSelected" [ngModelOptions]="{standalone: true}"
+                            (ngModelChange)="changeTopico($event)">
+                            <mat-option *ngFor="let item of topicos" value="{{item.id_topico}}">{{item.topico}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Seleccione un tipo
+                        </mat-error>
+                    </mat-form-field>
+                    <div class="col-1">
+                      
+                    </div>
+                </div> -->
+<!-- 
+                <div class="horiz-center row" *ngIf="task?.subtasks?.length > 0">
+                    <section class="example-section" class="col-lg-8 col-md-6 col-sm-12">
+                        <label class="w-100" for="">Seleccione comentarios</label>
+
+                        <span class="example-list-section">
+                            <mat-checkbox class="example-margin" [checked]="allComplete"
+                                [indeterminate]="someComplete()" (change)="setAll($event.checked)">
+                                {{task.comentario}}
+                            </mat-checkbox>
+                        </span>
+                        <span class="example-list-section">
+                            <ul>
+                                <li *ngFor="let subtask of task.subtasks">
+                                    <mat-checkbox [(ngModel)]="subtask.completed" [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="updateAllComplete()">
+                                        {{subtask.comentario}}
+                                    </mat-checkbox>
+                                </li>
+                            </ul>
+                        </span>
+                    </section>
+                </div>
+
+                <div class="horiz-center row" *ngIf="task?.subtasks?.length < 1 && topicoSelected">
+                    <p class="col-lg-8 col-md-6 col-sm-12">
+                        No se encontraron comentarios registrados de este tipo.
+                    </p>
+                </div> -->
+
+                <div class="text-center">
+                    <button mat-raised-button color="primary" type="submit">Aceptar</button>
+                </div>
+
+            </form>
+        </mat-card>
+    </mat-tab>
+</mat-tab-group>

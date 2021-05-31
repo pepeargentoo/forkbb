@@ -1,0 +1,23 @@
+<mat-card class="m-2">
+    <p-orderList [value]="noticias" [listStyle]="{'height':'auto'}" header="Lista de Links" filterBy="url"
+        filterPlaceholder="Filtrar por url" dragdrop="true">
+        <ng-template let-product pTemplate="item">
+            <div class="product-item">
+                <div class="product-list-detail">
+                    <h5 class="p-mb-2">{{product.pag_noticia}}</h5>
+                    <!-- <i class="pi pi-comment product-category-icon"></i> -->
+                    <span class="product-category">{{product.url}}</span>
+                </div>
+                <div class="product-list-action">
+                    <h6 class="p-mb-2">
+                        <i class="pi pi-comment product-category-icon"></i>
+                        {{product.cant_comentarios}}
+                    </h6>
+                    <span [class]="'product-badge status-'">
+                        <i class="pi pi-heart product-category-icon"></i>{{product.cant_mg}}
+                    </span>
+                </div>
+            </div>
+        </ng-template>
+    </p-orderList>
+</mat-card>

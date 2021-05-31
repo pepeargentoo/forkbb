@@ -1,0 +1,182 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+}
+
+.horiz-center {
+  display: flex;
+  justify-content: center;
+}
+
+.vertic-center {
+  display: flex;
+  align-items: center;
+}
+
+.sticky {
+  height: 400px;
+  overflow: auto;
+}
+
+.p-menuitem-text {
+  font-size: 14px !important;
+}
+
+.p-message {
+  margin: 3px !important;
+}
+
+p-messages.zona > div .p-message-wrapper {
+  margin: 3px !important;
+  padding: 0px !important;
+}
+
+mat-sidenav-content.mat-drawer-content > app-tableros {
+  overflow: unset !important;
+}
+
+tr.example-detail-row {
+  height: 0 !important;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke !important;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef !important;
+}
+
+.example-element-row td {
+  border-bottom-width: 0 !important;
+}
+
+.example-element-detail {
+  overflow: hidden !important;
+  display: flex !important;
+}
+
+.example-element-diagram {
+  min-width: 80px !important;
+  border: 2px solid black !important;
+  padding: 8px !important;
+  font-weight: lighter !important;
+  margin: 8px 0 !important;
+  height: 104px !important;
+}
+
+.example-element-symbol {
+  font-weight: bold !important;
+  font-size: 40px !important;
+  line-height: normal !important;
+}
+
+.example-element-description {
+  padding: 16px !important;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5 !important;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  text-align: left;
+  border: 1px solid #e9ecef;
+  border-width: 0 0 1px 0;
+  padding: 0.3rem 0.3rem !important;
+}
+
+.mat-tab-group[mat-stretch-tabs] > .mat-tab-header .mat-tab-label {
+  -webkit-box-shadow: 0px 15px 5px 0px rgba(0,0,0,0.45);
+  -moz-box-shadow: 0px 15px 5px 0px rgba(0,0,0,0.45);
+  box-shadow: 0px 15px 5px 0px rgba(0,0,0,0.45);
+}
+
+td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+  padding: 0px 15px !important;
+}
+
+span.p-button .p-component .p-fileupload-choose .p-ripple {
+  background: #FF4100 !important;
+}
+
+#style-3::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+#style-3::-webkit-scrollbar
+{
+  height: 2px;
+  width: 6px;
+	background-color: #F5F5F5;
+}
+
+#style-3::-webkit-scrollbar-thumb
+{
+	background-color: #000000;
+}
+
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+.tooltip .tiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 3px;
+    padding: 6px 0;
+    position: absolute;
+    z-index: 1;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+.tooltip .tiptext::after {
+    content: "";
+    position: absolute;
+    border-width: 5px;
+    border-style: solid;
+}
+.tooltip:hover .tiptext {
+    visibility: visible;
+}
+
+.tooltip.right .tiptext{
+  top: -5px;
+  left: 110%;
+}
+.tooltip.right .tiptext::after{
+  margin-top: -5px;
+  top: 50%;
+  right: 100%;
+  border-color: transparent #2E2E2E transparent transparent;
+}
+
+.danger .mat-progress-bar-fill::after {
+  background-color: red !important;
+}
+
+.success .mat-progress-bar-fill::after {
+  background-color: #28a745  !important;
+}  
+.warning .mat-progress-bar-fill::after {
+  background-color: #ffc107  !important;
+}
+
+.my-custom-tooltip {
+  max-width: unset !important;
+}
+
+

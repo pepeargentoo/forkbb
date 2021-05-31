@@ -1,0 +1,85 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+    <p-messages [(value)]="msgAlert" [enableService]="false" class="zona"></p-messages>
+
+    <mat-toolbar color="primary" class="example-toolbar">
+        <mat-toolbar-row>
+            <button mat-icon-button (click)="snav.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <h1 class="example-app-name" [routerLink]="[ './indicadores']">Administración</h1>
+            <span class="example-spacer"></span>
+            <button mat-icon-button class="example-icon favorite-icon" (click)="showAlert()"
+                matTooltip="Ver Zona de Alerta" [matTooltipPosition]='"left"'>
+                <mat-icon>warning</mat-icon>
+            </button>
+            <button mat-icon-button class="example-icon" (click)="showFilter()" matTooltip="Ver Zona de búsqueda"
+                [matTooltipPosition]='"left"'>
+                <mat-icon>search</mat-icon>
+            </button>
+            <a href="https://docs.google.com/document/d/e/2PACX-1vTxeXuxVWnPrs1Ynk2MkJloNyWUAdrjI__r75gZ9BOlxTFKiEZOjuB98Uf1_TQX1K65PiQhbmCllWWN/pub"
+                target="_blank">
+                <button mat-icon-button class="example-icon text-white" matTooltip="Ver Ayuda"
+                    [matTooltipPosition]='"left"'>
+                    <mat-icon>help</mat-icon>
+                </button>
+            </a>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+            fixedTopGap="56">
+            <!-- <mat-nav-list>
+                <a mat-list-item [routerLink]="[ './facebook']">Facebook</a>
+                <a mat-list-item [routerLink]="[ './autoScraper']">AutoScraper</a>
+                <a mat-list-item routerLink=".">Scraper Genérico</a>
+            </mat-nav-list> -->
+
+            <p-panelMenu [model]="items"></p-panelMenu>
+
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+    <!-- <p-messages [(value)]="msgFilter" [enableService]="false" class="zona">
+
+    </p-messages> -->
+
+    <p-messages severity="warn" [closable]=true class="zona" *ngIf="msgFilter">
+        <ng-template pTemplate>
+            <div class="row w-100">
+                <div class="mr-1 col-lg-4 col-sm-12">
+                    <mat-form-field class="w-100" color="accent">
+                        <mat-label> Buscar </mat-label>
+                        <input matInput type="text">
+                        <!-- <mat-error *ngIf="f.descripcion?.errors?.required">Buscar</mat-error> -->
+                    </mat-form-field>
+                </div>
+                <div class="mr-1 col-lg-7 mt-3 col-sm-12">
+                    <mat-checkbox class="mr-1">Trolls</mat-checkbox>
+                    <mat-checkbox class="mr-1">Fanáticos</mat-checkbox>
+                    <mat-checkbox class="mr-1">Influenciables</mat-checkbox>
+                    <mat-checkbox class="mr-1">Fundamentalistas</mat-checkbox>
+                    <mat-checkbox class="mr-1">Jóvenes</mat-checkbox>
+                    <mat-checkbox class="mr-1">Adultos</mat-checkbox>
+                    <mat-checkbox class="mr-1">Adultos mayores</mat-checkbox>
+                    <mat-checkbox class="mr-1">Hombres</mat-checkbox>
+                    <mat-checkbox class="mr-1">Mujeres</mat-checkbox>
+                </div>
+                <div class="m-auto">
+                    <button mat-mini-fab color="accent">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+                <div class="m-auto">
+                    <!-- <i class="pi pi-times" (click)="test()"></i> -->
+                    <button (click)="test()" class="p-message-close p-link ng-tns-c3-0 p-ripple ng-star-inserted" pripple="" type="button"><i class="p-message-close-icon pi pi-times"></i></button>
+                </div>
+            </div>
+         
+        </ng-template>
+    </p-messages>
+
+</div>

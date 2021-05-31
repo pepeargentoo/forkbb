@@ -1,0 +1,134 @@
+<p-toast position="bottom-center"></p-toast>
+
+<mat-tab-group mat-stretch-tabs [color]="color" [selectedIndex]="selected.value"
+    (selectedIndexChange)="selected.setValue($event)">
+    <mat-tab label="Listar los datos de las sonda">
+        <ng-template mat-tab-label>
+            <mat-icon>list</mat-icon>
+            Listar los datos de las sonda
+        </ng-template>
+        <mat-card class="m-2">
+            <h3 class="text-center">Listar los datos de las sonda</h3>
+            <p class="text-right">
+                <button mat-icon-button color="primary" (click)="actualizar()" matTooltip="Recargar datos"
+                    [matTooltipPosition]='"left"'>
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </p>
+            <div class="horiz-center sticky">
+                <div *ngIf="dataSource.data.length == 0">
+                    Cargando datos ...
+                </div>
+                <table *ngIf="dataSource.data.length > 0" mat-table [dataSource]="dataSource"
+                    class="table-hover mat-elevation-z8 col-lg-8 col-md-10 col-sm-12">
+
+                    <ng-container matColumnDef="grupo">
+                        <th mat-header-cell *matHeaderCellDef> ID Grupo </th>
+                        <td mat-cell *matCellDef="let element"> {{element?.nombre}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="temas">
+                        <th mat-header-cell *matHeaderCellDef> Grupo, Temas, Provincia </th>
+                        <td mat-cell *matCellDef="let element"> {{element?.temas}} </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="eliminar">
+                        <th mat-header-cell *matHeaderCellDef> Eliminar </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button color="warn" (click)="eliminar(element)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="editar">
+                        <th mat-header-cell *matHeaderCellDef> Editar </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button color="accent" (click)="editar(element)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Asignar tema de búsqueda a un grupo">
+        <mat-card class="m-2">
+            <h3 class="vertic-center horiz-center">
+                <p>
+                    Asignar tema de búsqueda al grupo
+                    <a href="https://docs.google.com/document/d/e/2PACX-1vSe1w4iZ9vUR1wYwR9yFjX8QWjBcuuCJzFE96niXpqoDx2dbD7tUmZ8Nuy_XWa6fg/pub" target="_blank">
+                        <button mat-icon-button color="secondary" matTooltip="Ver Ayuda" [matTooltipPosition]='"left"'>
+                            <mat-icon>help</mat-icon>
+                        </button>
+                    </a>
+                    <!-- <iframe src="https://docs.google.com/document/d/e/2PACX-1vSe1w4iZ9vUR1wYwR9yFjX8QWjBcuuCJzFE96niXpqoDx2dbD7tUmZ8Nuy_XWa6fg/pub?embedded=true"></iframe> -->
+                </p>
+            
+            </h3>
+            <form [formGroup]="form" (ngSubmit)="asignar()">
+                <div class="horiz-center row">
+                    <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>ID Grupo Telegram</mat-label>
+                        <input matInput placeholder="123" formControlName="id" required>
+                        <button *ngIf="f.id.value" mat-button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="f.id.setValue(null)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <mat-error>
+                            Ingrese ID del grupo de Telegram
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="horiz-center row">
+                    <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>Nombre del grupo Telegram</mat-label>
+                        <input matInput placeholder="" formControlName="nombre" required>
+                        <button *ngIf="f.nombre.value" mat-button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="f.nombre.setValue(null)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <mat-error>
+                            Ingrese nombre del grupo de Telegram
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="horiz-center row">
+                    <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>Temas a buscar</mat-label>
+                        <input matInput placeholder="tema1, tema2" formControlName="temas" required>
+                        <button *ngIf="f.temas.value" mat-button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="f.temas.setValue(null)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <mat-error>
+                            Ingrese temas, separados por coma
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="horiz-center row">
+                    <mat-form-field appearance="outline" class="col-lg-8 col-md-6 col-sm-12">
+                        <mat-label>Seleccione Provincias</mat-label>
+                        <mat-select formControlName="provincias" multiple required>
+                            <mat-option *ngFor="let item of listaProvincias" value="{{item.value}}">{{item.value}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Seleccione provincia/s
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="text-center">
+                    <button mat-raised-button color="accent" type="button" class="m-3" (click)="cancelar()">Cancelar</button>
+                    <button mat-raised-button color="primary" type="submit" class="m-3">Aceptar</button>
+                </div>
+
+            </form>
+        </mat-card>
+
+    </mat-tab>
+</mat-tab-group>

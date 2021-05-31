@@ -1,0 +1,80 @@
+<!-- <mat-accordion class="example-headers-align" multi color="color" backgroundColor="color">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title class="font-weight-bold">
+                Listado de Tableros
+            </mat-panel-title>
+            <mat-panel-description>
+                Click aquí para seleccionar otro tablero:
+                <i> "{{ findNombreTableroById(tableroSelected)}}" </i>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="col-12">
+            <div class="list-group" *ngFor="let item of kibanaList">
+                <a class="list-group-item list-group-item-action" (click)="changeTableroSelected(item.id)">
+                    {{item.nombre}}
+                </a>
+            </div>
+        </div>
+
+    </mat-expansion-panel>
+</mat-accordion>
+
+<span [ngSwitch]="tableroSelected" class="w-100 h-100">
+    <p *ngSwitchCase="1">
+        <iframe
+            src="http://167.86.120.98/s/sergio_noticias/app/kibana#/dashboard/3e791f40-db85-11ea-ba04-a57712f5d954?embed=true&_g=(refreshInterval:(pause:!t,value:0),time:(from:now-90d,mode:quick,to:now))&_a=(description:'',filters:!(),fullScreenMode:!f,options:(darkTheme:!f,hidePanelTitles:!f,useMargins:!t),panels:!((embeddableConfig:(),gridData:(h:15,i:'1',w:24,x:0,y:40),id:'2d2f00d0-da52-11ea-ba04-a57712f5d954',panelIndex:'1',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'2',w:24,x:0,y:55),id:'4a752d10-da55-11ea-ba04-a57712f5d954',panelIndex:'2',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'3',w:24,x:0,y:70),id:'83cb7030-da53-11ea-ba04-a57712f5d954',panelIndex:'3',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'4',w:24,x:0,y:25),id:eadc36f0-da54-11ea-ba04-a57712f5d954,panelIndex:'4',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:10,i:'6',w:9,x:0,y:0),id:f8125b20-db84-11ea-ba04-a57712f5d954,panelIndex:'6',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:10,i:'7',w:15,x:9,y:0),id:ddb79230-db85-11ea-ba04-a57712f5d954,panelIndex:'7',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'8',w:24,x:24,y:29),id:'8207e3b0-da52-11ea-ba04-a57712f5d954',panelIndex:'8',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'9',w:24,x:24,y:44),id:f7d85ee0-da51-11ea-ba04-a57712f5d954,panelIndex:'9',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'11',w:24,x:24,y:59),id:'232ab8f0-da51-11ea-ba04-a57712f5d954',panelIndex:'11',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'12',w:24,x:0,y:85),id:a52234f0-da51-11ea-ba04-a57712f5d954,panelIndex:'12',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'14',w:24,x:24,y:74),id:'1a5972d0-df32-11ea-ba04-a57712f5d954',panelIndex:'14',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'15',w:24,x:24,y:89),id:'52585bf0-df33-11ea-ba04-a57712f5d954',panelIndex:'15',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'16',w:24,x:0,y:100),id:'02c061f0-df33-11ea-ba04-a57712f5d954',panelIndex:'16',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'17',w:24,x:24,y:104),id:b4641f70-df36-11ea-ba04-a57712f5d954,panelIndex:'17',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'18',w:24,x:0,y:115),id:'5bbdf600-df38-11ea-ba04-a57712f5d954',panelIndex:'18',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'19',w:24,x:0,y:10),id:'0c62aae0-ebf1-11ea-9e35-61799908858a',panelIndex:'19',type:visualization,version:'6.8.10'),(embeddableConfig:(mapCenter:!(-32.22674287041065,-60.95214843750001),mapZoom:7),gridData:(h:14,i:'20',w:10,x:24,y:0),id:'87984de0-ebf2-11ea-9e35-61799908858a',panelIndex:'20',type:visualization,version:'6.8.10'),(embeddableConfig:(mapCenter:!(-36.120127589781454,-421.83105468750006),mapZoom:5),gridData:(h:14,i:'21',w:10,x:34,y:0),id:df4deae0-ebf2-11ea-9e35-61799908858a,panelIndex:'21',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'22',w:24,x:24,y:14),id:'846e2970-ecd6-11ea-9e35-61799908858a',panelIndex:'22',type:visualization,version:'6.8.10')),query:(language:lucene,query:''),timeRestore:!f,title:Sergio_Tablero_2,viewMode:view)"></iframe>
+    </p>
+    <p *ngSwitchCase="2">
+        <iframe
+            src="http://167.86.120.98/s/sergio_noticias/app/kibana#/dashboard/cac95aa0-0c2c-11eb-86ad-15570f2d6b12?embed=true&_g=()&_a=(description:'',filters:!(),fullScreenMode:!f,options:(darkTheme:!f,hidePanelTitles:!f,useMargins:!t),panels:!((embeddableConfig:(),gridData:(h:28,i:'1',w:48,x:0,y:7),id:'0c62aae0-ebf1-11ea-9e35-61799908858a',panelIndex:'1',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'3',w:24,x:0,y:35),id:ed677a30-0c2f-11eb-86ad-15570f2d6b12,panelIndex:'3',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:15,i:'4',w:24,x:24,y:35),id:'4a752d10-da55-11ea-ba04-a57712f5d954',panelIndex:'4',type:visualization,version:'6.8.10'),(embeddableConfig:(),gridData:(h:7,i:'5',w:48,x:0,y:0),id:cab76230-0c8d-11eb-86ad-15570f2d6b12,panelIndex:'5',type:visualization,version:'6.8.10')),query:(language:lucene,query:''),timeRestore:!f,title:Sergio_Tablero_Tablas,viewMode:view)"></iframe>
+    </p>
+    <p *ngSwitchCase="3">
+        <iframe
+            src="http://167.86.120.98/s/sergio_noticias/app/kibana#/visualize/edit/e43a2ba0-1806-11eb-86ad-15570f2d6b12?embed=true&_g=(refreshInterval:(pause:!t,value:0),time:(from:now-90d,mode:quick,to:now))&_a=(filters:!(),linked:!f,query:(language:lucene,query:''),uiState:(),vis:(aggs:!((enabled:!t,id:'1',params:(),schema:metric,type:count),(enabled:!t,id:'2',params:(field:palabra.keyword,missingBucket:!f,missingBucketLabel:Missing,order:desc,orderBy:'1',otherBucket:!f,otherBucketLabel:Other,size:196),schema:segment,type:terms)),params:(maxFontSize:72,minFontSize:18,orientation:single,scale:linear,showLabel:!t),title:Sergio_Nube_Palabras2,type:tagcloud))"></iframe>
+    </p>
+    <p *ngSwitchCase="4">
+        <iframe
+            src="http://167.86.120.98/s/sergio_noticias/app/kibana#/visualize/edit/20083aa0-1807-11eb-86ad-15570f2d6b12?embed=true&_g=(refreshInterval:(pause:!t,value:0),time:(from:now-90d,mode:quick,to:now))&_a=(filters:!(),linked:!f,query:(language:lucene,query:''),uiState:(),vis:(aggs:!((enabled:!t,id:'1',params:(),schema:metric,type:count),(enabled:!t,id:'2',params:(customLabel:Medios,field:medio.keyword,missingBucket:!f,missingBucketLabel:Missing,order:desc,orderBy:'1',otherBucket:!f,otherBucketLabel:Other,size:30),schema:segment,type:terms)),params:(maxFontSize:72,minFontSize:18,orientation:single,scale:linear,showLabel:!t),title:Sergio_Nube_Medio2,type:tagcloud))"
+            height="600" width="800"></iframe>
+    </p>
+    <p *ngSwitchCase="5">
+        <iframe
+            src="http://167.86.120.98/s/sergio_noticias/app/kibana#/visualize/edit/556d74b0-0d55-11eb-86ad-15570f2d6b12?embed=true&_g=(refreshInterval:(pause:!t,value:0),time:(from:now-2y,mode:quick,to:now))&_a=(filters:!(),linked:!f,query:(language:lucene,query:''),uiState:(vis:(defaultColors:('0+-+113':'rgb(247,252,245)','113+-+225':'rgb(199,233,192)','225+-+338':'rgb(116,196,118)','338+-+450':'rgb(35,139,69)'))),vis:(aggs:!((enabled:!t,id:'1',params:(),schema:metric,type:count),(enabled:!t,id:'2',params:(customLabel:Medios,field:medio.keyword,missingBucket:!f,missingBucketLabel:Missing,order:desc,orderBy:'1',otherBucket:!f,otherBucketLabel:Other,size:17),schema:segment,type:terms),(enabled:!t,id:'3',params:(field:palabra.keyword,missingBucket:!f,missingBucketLabel:Missing,order:desc,orderBy:'1',otherBucket:!f,otherBucketLabel:Other,row:!t,size:5),schema:split,type:terms)),params:(addLegend:!t,addTooltip:!t,colorSchema:Greens,colorsNumber:4,colorsRange:!(),enableHover:!f,invertColors:!f,legendPosition:right,percentageMode:!f,setColorRange:!f,times:!(),type:heatmap,valueAxes:!((id:ValueAxis-1,labels:(color:%23555,overwriteColor:!f,rotate:0,show:!f),scale:(defaultYExtents:!f,type:linear),show:!f,type:value))),title:Sergio_Calor2_PalabrasVsMedios,type:heatmap))"
+            height="600" width="800"></iframe>
+    </p>
+    <p *ngSwitchCase="6">
+        <iframe
+            src="http://167.86.120.98/s/sergio_noticias/app/kibana#/visualize/edit/b4641f70-df36-11ea-ba04-a57712f5d954?embed=true&_g=(refreshInterval:(pause:!t,value:0),time:(from:now-2y,mode:quick,to:now))&_a=(filters:!(),linked:!f,query:(language:lucene,query:''),uiState:(),vis:(aggs:!((enabled:!t,id:'1',params:(customLabel:TRabajo,field:trabajo,percents:!(50)),schema:metric,type:median),(enabled:!t,id:'2',params:(field:fecha2,missingBucket:!f,missingBucketLabel:Missing,order:desc,orderBy:_key,otherBucket:!f,otherBucketLabel:Other,size:5),schema:segment,type:terms),(enabled:!t,id:'3',params:(field:educacion,missingBucket:!f,missingBucketLabel:Missing,order:desc,orderBy:_key,otherBucket:!f,otherBucketLabel:Other,row:!t,size:5),schema:split,type:terms)),params:(addLegend:!t,addTimeMarker:!f,addTooltip:!t,categoryAxes:!((id:CategoryAxis-1,labels:(show:!t,truncate:100),position:bottom,scale:(type:linear),show:!t,style:(),title:(),type:category)),grid:(categoryLines:!t,style:(color:%23eee),valueAxis:!n),legendPosition:right,orderBucketsBySum:!t,seriesParams:!((data:(id:'1',label:TRabajo),drawLinesBetweenPoints:!t,interpolate:cardinal,mode:stacked,show:true,showCircles:!t,type:line,valueAxis:ValueAxis-2)),times:!(),type:histogram,valueAxes:!((id:ValueAxis-1,labels:(filter:!f,rotate:0,show:!t,truncate:100),name:LeftAxis-1,position:left,scale:(mode:normal,type:linear),show:!t,style:(),title:(text:TRabajo),type:value),(id:ValueAxis-2,labels:(filter:!f,rotate:0,show:!t,truncate:100),name:RightAxis-1,position:right,scale:(mode:normal,type:linear),show:!t,style:(),title:(text:TRabajo),type:value))),title:Sergio_Barra_Rel_Trabajo_Educaci%C3%B3n,type:histogram))"
+            height="600" width="800"></iframe>
+    </p>
+    <p *ngSwitchCase="7">
+        <iframe
+            src="http://167.86.120.98/s/sergio_noticias/app/kibana#/visualize/edit/434a7450-1808-11eb-86ad-15570f2d6b12?embed=true&_g=(refreshInterval:(pause:!t,value:0),time:(from:now-2y,mode:quick,to:now))&_a=(filters:!(),linked:!f,query:(language:lucene,query:''),uiState:(vis:(defaultColors:('0+-+50':'rgb(0,104,55)','50+-+75':'rgb(255,255,190)','75+-+100':'rgb(165,0,38)'))),vis:(aggs:!((enabled:!t,id:'1',params:(),schema:metric,type:count),(enabled:!t,id:'2',params:(field:medio.keyword,missingBucket:!f,missingBucketLabel:Missing,order:desc,orderBy:_key,otherBucket:!f,otherBucketLabel:Other,size:7),schema:group,type:terms)),params:(addLegend:!t,addTooltip:!t,gauge:(backStyle:Full,colorSchema:'Green+to+Red',colorsRange:!((from:0,to:50),(from:50,to:75),(from:75,to:100)),extendRange:!t,gaugeColorMode:Labels,gaugeStyle:Full,gaugeType:Arc,invertColors:!f,labels:(color:black,show:!t),orientation:vertical,percentageMode:!f,scale:(color:%23333,labels:!f,show:!t),style:(bgColor:!f,bgFill:%23eee,bgMask:!f,bgWidth:0.9,fontSize:60,labelColor:!t,mask:!f,maskBars:50,subText:'',width:0.9),type:meter,verticalSplit:!f),isDisplayWarning:!f,type:gauge),title:Sergio_Reloj_Medios2,type:gauge))"
+            height="600" width="800"></iframe>
+    </p>
+    <p *ngSwitchCase="8">
+        <iframe
+            src="http://167.86.120.98/s/sergio_noticias/app/kibana#/visualize/edit/797d1e60-1808-11eb-86ad-15570f2d6b12?embed=true&_g=(refreshInterval:(pause:!t,value:0),time:(from:now-2y,mode:quick,to:now))&_a=(filters:!(),linked:!f,query:(language:lucene,query:''),uiState:(vis:(defaultColors:('0+-+2,750':'rgb(247,252,245)','2,750+-+5,500':'rgb(199,233,192)','5,500+-+8,250':'rgb(116,196,118)','8,250+-+11,000':'rgb(35,139,69)'))),vis:(aggs:!((enabled:!t,id:'1',params:(),schema:metric,type:count),(enabled:!t,id:'2',params:(field:palabra.keyword,missingBucket:!f,missingBucketLabel:Missing,order:desc,orderBy:'1',otherBucket:!f,otherBucketLabel:Other,size:5),schema:segment,type:terms),(enabled:!t,id:'3',params:(field:grupo.keyword,missingBucket:!f,missingBucketLabel:Missing,order:desc,orderBy:'1',otherBucket:!f,otherBucketLabel:Other,size:5),schema:group,type:terms)),params:(addLegend:!t,addTooltip:!t,colorSchema:Greens,colorsNumber:4,colorsRange:!(),enableHover:!f,invertColors:!f,legendPosition:right,percentageMode:!f,setColorRange:!f,times:!(),type:heatmap,valueAxes:!((id:ValueAxis-1,labels:(color:%23555,overwriteColor:!f,rotate:0,show:!f),scale:(defaultYExtents:!f,type:linear),show:!f,type:value))),title:Sergios_Calor_Medios_Grupos2,type:heatmap))"
+            height="600" width="800"></iframe>
+    </p>
+    <p *ngSwitchCase="9">
+        <iframe
+            src="http://167.86.120.98/s/sergio_noticias/app/kibana#/visualize/edit/bdccc250-1808-11eb-86ad-15570f2d6b12?embed=true&_g=(refreshInterval:(pause:!t,value:0),time:(from:now-2y,mode:quick,to:now))&_a=(filters:!(),linked:!f,query:(language:lucene,query:''),uiState:(vis:(defaultColors:('0+-+20':'rgb(247,252,245)','20+-+40':'rgb(199,233,192)','40+-+60':'rgb(116,196,118)','60+-+80':'rgb(35,139,69)'))),vis:(aggs:!((enabled:!t,id:'1',params:(),schema:metric,type:count),(enabled:!t,id:'2',params:(field:fecha,missingBucket:!f,missingBucketLabel:Missing,order:desc,orderBy:'1',otherBucket:!f,otherBucketLabel:Other,size:5),schema:segment,type:terms),(enabled:!t,id:'3',params:(field:palabra.keyword,missingBucket:!f,missingBucketLabel:Missing,order:desc,orderBy:'1',otherBucket:!f,otherBucketLabel:Other,size:5),schema:group,type:terms)),params:(addLegend:!t,addTooltip:!t,colorSchema:Greens,colorsNumber:4,colorsRange:!(),enableHover:!f,invertColors:!f,legendPosition:right,percentageMode:!f,setColorRange:!f,times:!(),type:heatmap,valueAxes:!((id:ValueAxis-1,labels:(color:%23555,overwriteColor:!f,rotate:0,show:!f),scale:(defaultYExtents:!f,type:linear),show:!f,type:value))),title:Sergio_Calor_Palabra_Fecha2,type:heatmap))"
+            height="600" width="800"></iframe>
+    </p>
+    <p *ngSwitchCase="10">
+        <iframe
+            src="http://167.86.120.98/s/sergio_noticias/app/kibana#/visualize/edit/24a2e680-1809-11eb-86ad-15570f2d6b12?embed=true&_g=(refreshInterval:(pause:!t,value:0),time:(from:now-2y,mode:quick,to:now))&_a=(filters:!(),linked:!f,query:(language:lucene,query:''),uiState:(vis:(defaultColors:('0+-+100':'rgb(0,104,55)'))),vis:(aggs:!((enabled:!t,id:'1',params:(),schema:metric,type:count),(enabled:!t,id:'2',params:(customInterval:'2h',drop_partials:!f,extended_bounds:(),field:fecha,interval:auto,min_doc_count:1,useNormalizedEsInterval:!t),schema:group,type:date_histogram)),params:(addLegend:!f,addTooltip:!t,gauge:(autoExtend:!f,backStyle:Full,colorSchema:'Green+to+Red',colorsRange:!((from:0,to:10000)),gaugeColorMode:None,gaugeStyle:Full,gaugeType:Arc,invertColors:!f,labels:(color:black,show:!t),orientation:vertical,percentageMode:!t,scale:(color:%23333,labels:!f,show:!f,width:2),style:(bgColor:!f,bgFill:%23000,fontSize:60,labelColor:!f,subText:''),type:meter,useRanges:!f,verticalSplit:!f),isDisplayWarning:!f,type:gauge),title:Sergio_Reloj_Fecha2,type:goal))"
+            height="600" width="800"></iframe>
+    </p>
+    <p *ngSwitchDefault>
+
+    </p>
+</span> -->
+
+<iframe style="width: 100%; height: 98%; overflow: hidden;" 
+src="http://stg.kernelinformatica.com.ar/~ext001/portal.html"
+scrolling="yes">
+</iframe>
